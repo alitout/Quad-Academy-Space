@@ -1,0 +1,23 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+@import './custom.scss';
+
+* {
+    font-family: "Roboto", sans-serif;
+}
+
+.HeroSection {
+    background-color: $beige-100;
+    position: relative;
+    height: 100vh;
+
+    .heroContent {
+        background-image: url('../assets/heroSectionBg.svg');
+        background-repeat: no-repeat;
+        background-size: contain;
+        // position: absolute;
+
+        @media (max-width: 575px) {
+            background-image: none;
+        }
+    }
+}
