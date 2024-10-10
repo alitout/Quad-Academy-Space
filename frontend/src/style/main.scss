@@ -5,19 +5,69 @@
     font-family: "Roboto", sans-serif;
 }
 
+.Navbar {
+    padding-top: 4vh;
+
+    @media (min-width: 992px) {
+        padding-top: 5vh;
+    }
+}
+
 .HeroSection {
-    background-color: $beige-100;
     position: relative;
-    height: 100vh;
+    overflow: visible;
 
     .heroContent {
         background-image: url('../assets/heroSectionBg.svg');
         background-repeat: no-repeat;
         background-size: contain;
-        // position: absolute;
 
-        @media (max-width: 575px) {
+        @media (max-width: 576px) {
             background-image: none;
+        }
+    }
+}
+
+.Highlights {
+    @media (min-width: 768px) {
+        background: linear-gradient(to bottom, $beige-100 50%, rgba(245, 230, 234, 0) 50%) !important;
+    }
+
+    .highlight {
+        min-width: 10rem;
+        max-width: 20rem;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+
+        @media (min-width: 768px) {
+            text-align: start;
+        }
+
+        @media (min-width: 768px) and (max-width: 992px) {
+            min-width: 15rem;
+            max-width: 25rem;
+        }
+
+        .subText {
+            text-align: center;
+
+            @media (min-width: 768px) {
+                text-align: justify;
+            }
+        }
+    }
+
+    .icon {
+        width: 3rem;
+        height: 3rem;
+
+        @media (min-width: 768px) {
+            width: 6rem;
+            height: 6rem;
+            padding: 1.5rem;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 0.75rem;
         }
     }
 }
