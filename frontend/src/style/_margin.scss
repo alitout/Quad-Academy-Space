@@ -1,30 +1,198 @@
-// 3.375rem = 54px
-.mt-3_375 {
-    margin-top: 3.375rem !important;
+@import './sizes.scss';
+
+// Margin sizes
+@mixin generate-margin-classes($size-name, $size-value) {
+    .m-#{$size-name} {
+        margin: $size-value !important;
+    }
+
+    .mt-#{$size-name} {
+        margin-top: $size-value !important;
+    }
+
+    .mb-#{$size-name} {
+        margin-bottom: $size-value !important;
+    }
+
+    .ms-#{$size-name} {
+        margin-inline-start: $size-value !important;
+    }
+
+    .me-#{$size-name} {
+        margin-inline-end: $size-value !important;
+    }
+
+    .my-#{$size-name} {
+        margin-top: $size-value !important;
+        margin-bottom: $size-value !important;
+    }
+
+    .mx-#{$size-name} {
+        margin-left: $size-value !important;
+        margin-right: $size-value !important;
+    }
+
+    @media (min-width: 576px) {
+        .m-sm-#{$size-name} {
+            margin: $size-value !important;
+        }
+
+        .mt-sm-#{$size-name} {
+            margin-top: $size-value !important;
+        }
+
+        .mb-sm-#{$size-name} {
+            margin-bottom: $size-value !important;
+        }
+
+        .ms-sm-#{$size-name} {
+            margin-inline-start: $size-value !important;
+        }
+
+        .me-sm-#{$size-name} {
+            margin-inline-end: $size-value !important;
+        }
+
+        .my-sm-#{$size-name} {
+            margin-top: $size-value !important;
+            margin-bottom: $size-value !important;
+        }
+
+        .mx-sm-#{$size-name} {
+            margin-left: $size-value !important;
+            margin-right: $size-value !important;
+        }
+    }
+
+    @media (min-width: 768px) {
+        .m-md-#{$size-name} {
+            margin: $size-value !important;
+        }
+
+        .mt-md-#{$size-name} {
+            margin-top: $size-value !important;
+        }
+
+        .mb-md-#{$size-name} {
+            margin-bottom: $size-value !important;
+        }
+
+        .ms-md-#{$size-name} {
+            margin-inline-start: $size-value !important;
+        }
+
+        .me-md-#{$size-name} {
+            margin-inline-end: $size-value !important;
+        }
+
+        .my-md-#{$size-name} {
+            margin-top: $size-value !important;
+            margin-bottom: $size-value !important;
+        }
+
+        .mx-md-#{$size-name} {
+            margin-left: $size-value !important;
+            margin-right: $size-value !important;
+        }
+    }
+
+    @media (min-width: 992px) {
+        .m-lg-#{$size-name} {
+            margin: $size-value !important;
+        }
+
+        .mt-lg-#{$size-name} {
+            margin-top: $size-value !important;
+        }
+
+        .mb-lg-#{$size-name} {
+            margin-bottom: $size-value !important;
+        }
+
+        .ms-lg-#{$size-name} {
+            margin-inline-start: $size-value !important;
+        }
+
+        .me-lg-#{$size-name} {
+            margin-inline-end: $size-value !important;
+        }
+
+        .my-lg-#{$size-name} {
+            margin-top: $size-value !important;
+            margin-bottom: $size-value !important;
+        }
+
+        .mx-lg-#{$size-name} {
+            margin-left: $size-value !important;
+            margin-right: $size-value !important;
+        }
+    }
+
+    @media (min-width: 1200px) {
+        .m-xl-#{$size-name} {
+            margin: $size-value !important;
+        }
+
+        .mt-xl-#{$size-name} {
+            margin-top: $size-value !important;
+        }
+
+        .mb-xl-#{$size-name} {
+            margin-bottom: $size-value !important;
+        }
+
+        .ms-xl-#{$size-name} {
+            margin-inline-start: $size-value !important;
+        }
+
+        .me-xl-#{$size-name} {
+            margin-inline-end: $size-value !important;
+        }
+
+        .my-xl-#{$size-name} {
+            margin-top: $size-value !important;
+            margin-bottom: $size-value !important;
+        }
+
+        .mx-xl-#{$size-name} {
+            margin-left: $size-value !important;
+            margin-right: $size-value !important;
+        }
+    }
+
+    @media (min-width: 1400px) {
+        .m-xxl-#{$size-name} {
+            margin: $size-value !important;
+        }
+
+        .mt-xxl-#{$size-name} {
+            margin-top: $size-value !important;
+        }
+
+        .mb-xxl-#{$size-name} {
+            margin-bottom: $size-value !important;
+        }
+
+        .ms-xxl-#{$size-name} {
+            margin-inline-start: $size-value !important;
+        }
+
+        .me-xxl-#{$size-name} {
+            margin-inline-end: $size-value !important;
+        }
+
+        .my-xxl-#{$size-name} {
+            margin-top: $size-value !important;
+            margin-bottom: $size-value !important;
+        }
+
+        .mx-xxl-#{$size-name} {
+            margin-left: $size-value !important;
+            margin-right: $size-value !important;
+        }
+    }
 }
 
-.mb-3_375 {
-    margin-bottom: 3.375rem !important;
-}
-
-.ms-3_375 {
-    margin-left: 3.375rem !important;
-}
-
-.me-3_375 {
-    margin-right: 3.375rem !important;
-}
-
-.my-3_375 {
-    margin-top: 3.375rem !important;
-    margin-bottom: 3.375rem !important;
-}
-
-.mx-3_375 {
-    margin-left: 3.375rem !important;
-    margin-right: 3.375rem !important;
-}
-
-.m-3_375 {
-    margin: 3.375rem !important;
+@each $size-name, $size-value in $sizes {
+    @include generate-margin-classes($size-name, $size-value);
 }

@@ -1,20 +1,42 @@
-// font-size
-.fs-0_875 {
-    font-size: 0.875rem;
+@import './sizes.scss';
+
+// Font sizes
+@mixin generate-font-size-classes($size-name, $size-value) {
+    .fs-#{$size-name} {
+        font-size: $size-value !important;
+    }
+
+    @media (min-width: 576px) {
+        .fs-sm-#{$size-name} {
+            font-size: $size-value !important;
+        }
+    }
+
+    @media (min-width: 768px) {
+        .fs-md-#{$size-name} {
+            font-size: $size-value !important;
+        }
+    }
+
+    @media (min-width: 992px) {
+        .fs-lg-#{$size-name} {
+            font-size: $size-value !important;
+        }
+    }
+
+    @media (min-width: 1200px) {
+        .fs-xl-#{$size-name} {
+            font-size: $size-value !important;
+        }
+    }
+
+    @media (min-width: 1400px) {
+        .fs-xxl-#{$size-name} {
+            font-size: $size-value !important;
+        }
+    }
 }
 
-.fs-1_125 {
-    font-size: 1.125rem;
-}
-
-.fs-1_25 {
-    font-size: 1.25rem;
-}
-
-.fs-1_5 {
-    font-size: 1.5rem;
-}
-
-.fs-4_3125 {
-    font-size: 4.3125rem;
+@each $size-name, $size-value in $sizes {
+    @include generate-font-size-classes($size-name, $size-value);
 }

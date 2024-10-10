@@ -1,30 +1,198 @@
-// 3.375rem = 54px
-.pt-3_375 {
-    padding-top: 3.375rem !important;
+@import './sizes.scss';
+
+// Paddings
+@mixin generate-padding-classes($size-name, $size-value) {
+    .p-#{$size-name} {
+        padding: $size-value !important;
+    }
+
+    .pt-#{$size-name} {
+        padding-top: $size-value !important;
+    }
+
+    .pb-#{$size-name} {
+        padding-bottom: $size-value !important;
+    }
+
+    .ps-#{$size-name} {
+        padding-inline-start: $size-value !important;
+    }
+
+    .pe-#{$size-name} {
+        padding-inline-end: $size-value !important;
+    }
+
+    .py-#{$size-name} {
+        padding-top: $size-value !important;
+        padding-bottom: $size-value !important;
+    }
+
+    .px-#{$size-name} {
+        padding-left: $size-value !important;
+        padding-right: $size-value !important;
+    }
+
+    @media (min-width: 576px) {
+        .p-sm-#{$size-name} {
+            padding: $size-value !important;
+        }
+
+        .pt-sm-#{$size-name} {
+            padding-top: $size-value !important;
+        }
+
+        .pb-sm-#{$size-name} {
+            padding-bottom: $size-value !important;
+        }
+
+        .ps-sm-#{$size-name} {
+            padding-inline-start: $size-value !important;
+        }
+
+        .pe-sm-#{$size-name} {
+            padding-inline-end: $size-value !important;
+        }
+
+        .py-sm-#{$size-name} {
+            padding-top: $size-value !important;
+            padding-bottom: $size-value !important;
+        }
+
+        .px-sm-#{$size-name} {
+            padding-left: $size-value !important;
+            padding-right: $size-value !important;
+        }
+    }
+
+    @media (min-width: 768px) {
+        .p-md-#{$size-name} {
+            padding: $size-value !important;
+        }
+
+        .pt-md-#{$size-name} {
+            padding-top: $size-value !important;
+        }
+
+        .pb-md-#{$size-name} {
+            padding-bottom: $size-value !important;
+        }
+
+        .ps-md-#{$size-name} {
+            padding-inline-start: $size-value !important;
+        }
+
+        .pe-md-#{$size-name} {
+            padding-inline-end: $size-value !important;
+        }
+
+        .py-md-#{$size-name} {
+            padding-top: $size-value !important;
+            padding-bottom: $size-value !important;
+        }
+
+        .px-md-#{$size-name} {
+            padding-left: $size-value !important;
+            padding-right: $size-value !important;
+        }
+    }
+
+    @media (min-width: 992px) {
+        .p-lg-#{$size-name} {
+            padding: $size-value !important;
+        }
+
+        .pt-lg-#{$size-name} {
+            padding-top: $size-value !important;
+        }
+
+        .pb-lg-#{$size-name} {
+            padding-bottom: $size-value !important;
+        }
+
+        .ps-lg-#{$size-name} {
+            padding-inline-start: $size-value !important;
+        }
+
+        .pe-lg-#{$size-name} {
+            padding-inline-end: $size-value !important;
+        }
+
+        .py-lg-#{$size-name} {
+            padding-top: $size-value !important;
+            padding-bottom: $size-value !important;
+        }
+
+        .px-lg-#{$size-name} {
+            padding-left: $size-value !important;
+            padding-right: $size-value !important;
+        }
+    }
+
+    @media (min-width: 1200px) {
+        .p-xl-#{$size-name} {
+            padding: $size-value !important;
+        }
+
+        .pt-xl-#{$size-name} {
+            padding-top: $size-value !important;
+        }
+
+        .pb-xl-#{$size-name} {
+            padding-bottom: $size-value !important;
+        }
+
+        .ps-xl-#{$size-name} {
+            padding-inline-start: $size-value !important;
+        }
+
+        .pe-xl-#{$size-name} {
+            padding-inline-end: $size-value !important;
+        }
+
+        .py-xl-#{$size-name} {
+            padding-top: $size-value !important;
+            padding-bottom: $size-value !important;
+        }
+
+        .px-xl-#{$size-name} {
+            padding-left: $size-value !important;
+            padding-right: $size-value !important;
+        }
+    }
+
+    @media (min-width: 1400px) {
+        .p-xxl-#{$size-name} {
+            padding: $size-value !important;
+        }
+
+        .pt-xxl-#{$size-name} {
+            padding-top: $size-value !important;
+        }
+
+        .pb-xxl-#{$size-name} {
+            padding-bottom: $size-value !important;
+        }
+
+        .ps-xxl-#{$size-name} {
+            padding-inline-start: $size-value !important;
+        }
+
+        .pe-xxl-#{$size-name} {
+            padding-inline-end: $size-value !important;
+        }
+
+        .py-xxl-#{$size-name} {
+            padding-top: $size-value !important;
+            padding-bottom: $size-value !important;
+        }
+
+        .px-xxl-#{$size-name} {
+            padding-left: $size-value !important;
+            padding-right: $size-value !important;
+        }
+    }
 }
 
-.pb-3_375 {
-    padding-bottom: 3.375rem !important;
-}
-
-.ps-3_375 {
-    padding-left: 3.375rem !important;
-}
-
-.pe-3_375 {
-    padding-right: 3.375rem !important;
-}
-
-.py-3_375 {
-    padding-top: 3.375rem !important;
-    padding-bottom: 3.375rem !important;
-}
-
-.px-3_375 {
-    padding-left: 3.375rem !important;
-    padding-right: 3.375rem !important;
-}
-
-.p-3_375 {
-    padding: 3.375rem !important;
+@each $size-name, $size-value in $sizes {
+    @include generate-padding-classes($size-name, $size-value);
 }

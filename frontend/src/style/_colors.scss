@@ -22,41 +22,97 @@ $orange-500: #FF7426;
 // Beige
 $beige-100: #FDF8EE;
 
+$colors: (
+    "white": $white,
+    "black": $black,
+    "gray-500": $gray-500,
+    "gray-600": $gray-600,
+    "gray-900": $gray-900,
+    "blue-700": $blue-700,
+    "blue-900": $blue-900,
+    "purple-700": $purple-700,
+    "orange-500": $orange-500,
+    "beige-100": $beige-100
+);
+
+// Background Colors
+@mixin generate-bg-classes($color-name, $color-value) {
+    .bg-#{$color-name} {
+        background-color: $color-value !important;
+    }
+
+    @media (min-width: 576px) {
+        .bg-sm-#{$color-name} {
+            background-color: $color-value !important;
+        }
+    }
+
+    @media (min-width: 768px) {
+        .bg-md-#{$color-name} {
+            background-color: $color-value !important;
+        }
+    }
+
+    @media (min-width: 992px) {
+        .bg-lg-#{$color-name} {
+            background-color: $color-value !important;
+        }
+    }
+
+    @media (min-width: 1200px) {
+        .bg-xl-#{$color-name} {
+            background-color: $color-value !important;
+        }
+    }
+
+    @media (min-width: 1400px) {
+        .bg-xxl-#{$color-name} {
+            background-color: $color-value !important;
+        }
+    }
+}
+
+@each $color-name, $color-value in $colors {
+    @include generate-bg-classes($color-name, $color-value);
+}
 
 // Text Colors
-// Gray
-.text-gray-500 {
-    color: $gray-500 !important;
+@mixin generate-text-classes($color-name, $color-value) {
+    .text-#{$color-name} {
+        color: $color-value !important;
+    }
+
+    @media (min-width: 576px) {
+        .text-sm-#{$color-name} {
+            color: $color-value !important;
+        }
+    }
+
+    @media (min-width: 768px) {
+        .text-md-#{$color-name} {
+            color: $color-value !important;
+        }
+    }
+
+    @media (min-width: 992px) {
+        .text-lg-#{$color-name} {
+            color: $color-value !important;
+        }
+    }
+
+    @media (min-width: 1200px) {
+        .text-xl-#{$color-name} {
+            color: $color-value !important;
+        }
+    }
+
+    @media (min-width: 1400px) {
+        .text-xxl-#{$color-name} {
+            color: $color-value !important;
+        }
+    }
 }
 
-.text-gray-600 {
-    color: $gray-600 !important;
-}
-
-.text-gray-900 {
-    color: $gray-900 !important;
-}
-
-// Blue
-.text-blue-700 {
-    color: $blue-700 !important;
-}
-
-.text-blue-900 {
-    color: $blue-900 !important;
-}
-
-// Purple
-.text-purple-700 {
-    color: $purple-700 !important;
-}
-
-// Orange
-.text-orange-500 {
-    color: $orange-500 !important;
-}
-
-// Beige
-.text-beige-100 {
-    color: $beige-100 !important;
+@each $color-name, $color-value in $colors {
+    @include generate-text-classes($color-name, $color-value);
 }
