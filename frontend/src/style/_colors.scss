@@ -1,0 +1,62 @@
+// White
+$white: #FFFFFF;
+
+// Black
+$black: #000000;
+
+// Gray
+$gray-500: #8A8A8A;
+$gray-600: #606060;
+$gray-900: #1D1D1D;
+
+// Blue
+$blue-700: #0F335E;
+$blue-900: #050C26;
+
+// Purple
+$purple-700: #4D2C5E;
+
+// Orange
+$orange-500: #FF7426;
+
+// Beige
+$beige-100: #FDF8EE;
+
+
+// Text Colors
+// Gray
+.text-gray-500 {
+    color: $gray-500 !important;
+}
+
+.text-gray-600 {
+    color: $gray-600 !important;
+}
+
+.text-gray-900 {
+    color: $gray-900 !important;
+}
+
+// Blue
+.text-blue-700 {
+    color: $blue-700 !important;
+}
+
+.text-blue-900 {
+    color: $blue-900 !important;
+}
+
+// Purple
+.text-purple-700 {
+    color: $purple-700 !important;
+}
+
+// Orange
+.text-orange-500 {
+    color: $orange-500 !important;
+}
+
+// Beige
+.text-beige-100 {
+    color: $beige-100 !important;
+}
