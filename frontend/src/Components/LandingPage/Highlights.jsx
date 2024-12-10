@@ -6,7 +6,7 @@ import IconCertificate from '../../assets/iconCertificate.svg';
 function Highlights() {
     return (
         <div className='container d-flex justify-content-center'>
-            <div className="highlights col-11 bg-md-purple-700 rounded-4 d-flex flex-row gap-4 gap-md-5 flex-wrap justify-content-center py-4 px-3">
+            <div className="highlights col-11 bg-md-pink rounded-4 d-flex flex-row gap-4 gap-md-5 flex-wrap justify-content-center py-4 px-3">
                 <div className="highlight learn d-flex flex-column flex-md-row col-12 col-lg-4 gap-3 flex-grow-1">
                     <img src={IconLearn} alt="Learn Icon" className="icon iconLearn" />
                     <div className="txt text-md-white d-flex flex-column">

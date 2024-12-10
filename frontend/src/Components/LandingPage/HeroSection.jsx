@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
-import HeroImage from '../../assets/heroImage.svg';
-import Highlights from './Highlights';
+import  HeroImage from '../../assets/heroImage.svg';
 
 function HeroSection() {
 
@@ -10,9 +9,9 @@ function HeroSection() {
                 <div className="heroText text-center text-md-start d-flex flex-column col-8 col-md-4 z-1">
                     <div className="txt d-flex flex-column gap-2">
                         <div className="text-blue-900 fw-900 fs-1">
-                            The <span className='text-orange-500'>Smart</span>
+                            The <span className='text-cyan-blue'>Smart</span>
                             <br />
-                            Choice For <span className='text-orange-500'>Future</span>
+                            Choice For <span className='text-cyan-blue'>Future</span>
                         </div>
                         <div className="text-gray-500 fs-1_25">
                             Elearn is a global training provider based across the UK that specialises in accredited and bespoke training courses. We crush the...
@@ -20,7 +19,7 @@ function HeroSection() {
                     </div>
                 </div>
                 <div className="heroImg d-none d-md-flex justify-content-end col-7 z-0">
-                    <img src={HeroImage} alt="" className="w-100" />
+                    <img src={HeroImage} alt="" className=" py-5 w-100" />
                 </div>
             </div>
         </div>
