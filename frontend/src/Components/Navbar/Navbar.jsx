@@ -1,55 +1,86 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Navbar, Nav, Container, Offcanvas } from 'react-bootstrap';
+import Headroom from 'react-headroom';
 import Logo from '../Logo/Logo';
-import Menu01 from '@untitled-ui/icons-react/build/cjs/Menu01';
 
-const NavLinks = () => (
-    <>
-        <a href='#' className='navLink text-decoration-none'>
-            Home
-        </a>
-        <a href='#' className='navLink text-decoration-none'>
-            Programs
-        </a>
-        <a href='#' className='navLink text-decoration-none'>
-            Master Classes
-        </a>
-        <a href='#' className='navLink text-decoration-none'>
-            Community
-        </a>
-    </>
-);
+const ResponsiveNavbar = () => {
+    const [show, setShow] = useState(false); // State to manage the offcanvas visibility
 
-function Navbar() {
-    const navigate = useNavigate();
-    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
-    const toggleMobileMenu = () => {
-        setIsMobileMenuOpen(!isMobileMenuOpen);
-    };
+    const handleClose = () => setShow(false); // Close the menu
+    const handleShow = () => setShow(true); // Open the menu
 
     return (
-        <div className='container d-flex flex-column justify-content-between'>
-            <div className="navbar d-flex justify-content-around justify-content-sm-between">
-                <div className="logo">
-                    <Logo />
-                </div>
-                <div className="navLinks d-none d-lg-flex gap-3 gap-lg-5 fs-1_125 fw-600">
-                    <NavLinks />
-                </div>
-                <div className="mobile-menu-button d-lg-none" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
-                    <Menu01 />
-                </div>
-                <div className="offcanvas offcanvas-top" tabIndex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
-                    <div className="offcanvas-body">
-                        <div className="d-flex flex-column align-items-center text-center gap-3 fs-1_125 fw-600">
-                            <NavLinks />
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    );
-}
+        <Headroom style={{ zIndex: 1000, position: 'fixed', width: '100%' }}>
+            <Navbar expand="lg" bg="white" variant="light" className="border-bottom border-1 border-secondary-subtle">
+                <Container className="justify-content-around justify-content-sm-between p-0">
+                    <Navbar.Brand href="#">
+                        <Logo />
+                    </Navbar.Brand>
+                    <Navbar.Toggle aria-controls="offcanvasNavbar" onClick={handleShow} />
+                    <Navbar.Offcanvas
+                        id="offcanvasNavbar"
+                        aria-labelledby="offcanvasNavbarLabel"
+                        placement="end"
+                        show={show} // Controls visibility based on state
+                        onHide={handleClose} // Close the menu when offcanvas is dismissed
+                    >
+                        <Offcanvas.Header closeButton>
+                            <Offcanvas.Title id="offcanvasNavbarLabel">
+                                <Logo />
+                            </Offcanvas.Title>
+                        </Offcanvas.Header>
 
-export default Navbar;
+                        <Offcanvas.Body>
+                            <Nav className="justify-content-end align-items-center flex-grow-1 gap-3 gap-lg-5">
+                                <Nav.Link
+                                    active={false}
+                                    href="#"
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        window.location.hash = ''; // Update the hash
+                                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                                        handleClose(); // Close the offcanvas menu
+                                    }}
+                                >
+                                    Home
+                                </Nav.Link>
+                                <Nav.Link
+                                    active={false}
+                                    href="#programs"
+                                    onClick={() => {
+                                        document.getElementById('programs').scrollIntoView({ behavior: 'smooth' });
+                                        handleClose();
+                                    }}
+                                >
+                                    Programs
+                                </Nav.Link>
+                                <Nav.Link
+                                    active={false}
+                                    href="#master-classes"
+                                    onClick={() => {
+                                        document.getElementById('master-classes').scrollIntoView({ behavior: 'smooth' });
+                                        handleClose();
+                                    }}
+                                >
+                                    Master Classes
+                                </Nav.Link>
+                                <Nav.Link
+                                    active={false}
+                                    href="#community"
+                                    onClick={() => {
+                                        document.getElementById('community');
+                                        handleClose();
+                                    }}
+                                >
+                                    Community
+                                </Nav.Link>
+                            </Nav>
+                        </Offcanvas.Body>
+                    </Navbar.Offcanvas>
+                </Container>
+            </Navbar>
+        </Headroom>
+    );
+};
+
+export default ResponsiveNavbar;

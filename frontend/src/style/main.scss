@@ -5,10 +5,14 @@
     font-family: "Roboto", sans-serif;
 }
 
-a {
+a.nav-link {
     color: inherit;
     text-decoration: none;
     transition: color 0.3s ease-in-out;
+
+    font-size: 1.125rem !important;
+    font-weight: 600 !important;
+    white-space: nowrap !important;
 
     &:hover {
         color: darken($pink, 5%);
