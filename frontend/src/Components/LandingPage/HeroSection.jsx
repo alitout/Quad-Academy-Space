@@ -1,10 +1,13 @@
 import React, { useState } from 'react'
-import  HeroImage from '../../assets/heroImage.svg';
+import HeroImage from '../../assets/heroImage.svg';
 
 function HeroSection() {
 
     return (
-        <div className='container d-flex flex-column justify-content-between'>
+        <div
+            id='HeroSection'
+            className='HeroSection container d-flex flex-column justify-content-between bg-white pb-md-5 pt-4 pt-md-5'
+        >
             <div className="heroContent d-flex align-items-center justify-content-center justify-content-md-between flex-grow-1 py-4 py-md-0">
                 <div className="heroText text-center text-md-start d-flex flex-column col-8 col-md-4 z-1">
                     <div className="txt d-flex flex-column gap-2">
