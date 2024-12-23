@@ -1,0 +1,47 @@
+[
+    {
+        "id": 1,
+        "title": "Media Production",
+        "brief": "Dive into the world of video, audio, and digital media creation.",
+        "full_description": "This program offers comprehensive training in media production, including video editing, audio engineering, and digital content creation. Participants will gain hands-on experience with industry-standard tools and techniques to produce professional-quality media.",
+        "date": "2024-12-15",
+        "cost": 1200,
+        "image": "media-production"
+    },
+    {
+        "id": 2,
+        "title": "Marketing and Communications",
+        "brief": "Learn to craft compelling narratives that engage and inspire audiences.",
+        "full_description": "Explore the fundamentals of marketing and communications, including storytelling, audience engagement, and brand strategy. This program empowers participants to create impactful campaigns and build meaningful connections with target audiences.",
+        "date": "2025-01-10",
+        "cost": 1500,
+        "image": "marketing-communications"
+    },
+    {
+        "id": 3,
+        "title": "Graphic Design",
+        "brief": "Master the art of visual storytelling through design principles and software.",
+        "full_description": "This program focuses on the essential skills needed for graphic design, from understanding design principles to mastering popular design software. Participants will create visually compelling projects that communicate powerful messages.",
+        "date": "2025-02-05",
+        "cost": 1400,
+        "image": "graphic-design"
+    },
+    {
+        "id": 4,
+        "title": "Digital Photography",
+        "brief": "Capture life's moments through the lens of a camera.",
+        "full_description": "This program delves into the world of digital photography, covering composition, lighting, and post-processing techniques. Participants will learn how to capture high-quality images using various camera types and editing software.",
+        "date": "2025-03-07",
+        "cost": 1100,
+        "image": "digital-photography"
+    },
+    {
+        "id": 5,
+        "title": "Web Development",
+        "brief": "Build interactive websites and web applications.",
+        "full_description": "Explore the fundamentals of web development, including HTML, CSS, JavaScript, and modern frameworks. This program prepares participants to create responsive, user-friendly websites for various purposes and devices.",
+        "date": "2025-04-11",
+        "cost": 1300,
+        "image": "web-developement"
+    }
+]

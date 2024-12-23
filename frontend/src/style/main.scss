@@ -77,3 +77,21 @@ a.nav-link {
         }
     }
 }
+
+
+
+.program-card {
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s ease-in-out;
+}
+
+.program-card:hover {
+    transform: scale(1.05);
+}
+
+.hover-overlay {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

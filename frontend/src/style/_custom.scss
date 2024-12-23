@@ -3,3 +3,22 @@
 @import './fontSize.scss';
 @import './margin.scss';
 @import './padding.scss';
+
+.title{
+    color: $black;
+    font-weight: 500;
+    margin-bottom: 1rem;
+}
+
+.subTitle{
+    color: $gray-500;
+    font-size: 1.25rem;
+    margin-bottom: 1.5rem;
+}
+
+.card-img-top{
+    width: 100%;
+    height: 12rem;
+    object-fit: cover;
+    border-bottom: 1px solid $gray-100;
+}
