@@ -1,12 +1,12 @@
 import React, { useState } from 'react'
 import programsData from '../../data/jsons/programs.json';
+import { Button, Modal, Card, Image } from 'react-bootstrap';
 
 import mediaProduction from '../../data/images/programs/media-production.jpg';
 import marketingCommunications from '../../data/images/programs/marketing-communications.jpg';
 import graphicDesign from '../../data/images/programs/graphic-design.jpg';
 import digitalPhotography from '../../data/images/programs/digital-photography.jpg';
 import webDevelopment from '../../data/images/programs/web-development.jpg';
-import { Button, Modal, Card, Image } from 'react-bootstrap';
 
 
 const ImageMap = {
