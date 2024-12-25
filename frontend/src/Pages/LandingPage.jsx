@@ -2,7 +2,7 @@ import React from 'react'
 import HeroSection from '../Components/LandingPage/HeroSection';
 import Highlights from '../Components/LandingPage/Highlights';
 import Navbar from '../Components/Navbar/Navbar';
-import OurTracks from '../Components/LandingPage/OurTracks';
+import MasterClasses from '../Components/LandingPage/MasterClasses';
 import OurPrograms from '../Components/LandingPage/OurPrograms';
 
 function LandingPage() {
@@ -12,7 +12,7 @@ function LandingPage() {
             <HeroSection />
             <Highlights />
             <OurPrograms />
-            <OurTracks />
+            <MasterClasses />
         </div>
     )
 }

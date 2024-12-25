@@ -1,0 +1,86 @@
+[
+    {
+        "id": "content_camp",
+        "title": "Content Camp",
+        "short_description": "Learn strategies and tools to create impactful content. Hands-on experience for content creators.",
+        "description": "A comprehensive, hands-on workshop that will guide you through the essential strategies, tools, and techniques for creating impactful content across various platforms. Perfect for content creators looking to sharpen their skills and increase engagement.",
+        "key_takeaways": [
+            "Master content creation frameworks and strategies",
+            "Learn to optimize for SEO and audience engagement",
+            "Hands-on experience with popular content creation tools",
+            "Build a content calendar and strategy plan"
+        ],
+        "duration": "2 days",
+        "level": "Intermediate to Advanced",
+        "ideal_for": [
+            "Bloggers",
+            "YouTubers",
+            "Social Media Managers",
+            "Content Marketers"
+        ],
+        "image": "content-camp"
+    },
+    {
+        "id": "public_speaking",
+        "title": "Public Speaking",
+        "short_description": "Boost your confidence in public speaking and learn to engage your audience effectively.",
+        "description": "Boost your confidence and communication skills in this public speaking masterclass. Whether you’re presenting at work or speaking in front of large crowds, you’ll learn how to deliver your message effectively and engage your audience.",
+        "key_takeaways": [
+            "Overcome fear and anxiety of public speaking",
+            "Develop strong storytelling skills",
+            "Understand body language and voice modulation",
+            "Learn techniques to captivate your audience"
+        ],
+        "duration": "1 day",
+        "level": "Beginner to Intermediate",
+        "ideal_for": [
+            "Entrepreneurs",
+            "Executives",
+            "Students",
+            "Anyone looking to improve their public speaking skills"
+        ],
+        "image": "public-speaking"
+    },
+    {
+        "id": "social_media_security",
+        "title": "Social Media Security",
+        "short_description": "Learn the best practices to keep your social media accounts safe from hackers and threats.",
+        "description": "This masterclass is focused on the best practices for keeping your social media accounts safe from hackers and malicious attacks. It’s designed to teach individuals and businesses how to safeguard their digital presence.",
+        "key_takeaways": [
+            "Identify common social media security threats",
+            "Implement strong passwords and two-factor authentication",
+            "Understand privacy settings and how to control access",
+            "Learn to spot phishing scams and prevent cyber threats"
+        ],
+        "duration": "4 hours",
+        "level": "Beginner",
+        "ideal_for": [
+            "Social Media Managers",
+            "Individuals",
+            "Small Business Owners",
+            "Digital Marketers"
+        ],
+        "image": "social-media-security"
+    },
+    {
+        "id": "ai_in_content_creation",
+        "title": "AI in Content Creation",
+        "short_description": "Explore how AI can enhance the content creation process, from writing to design.",
+        "description": "Explore the transformative role of AI in content creation. This masterclass dives into how artificial intelligence can enhance the creative process, from generating ideas to automating content production.",
+        "key_takeaways": [
+            "Learn how AI tools can assist with writing, video creation, and design",
+            "Understand how AI can improve SEO and content strategy",
+            "Discover the ethical implications of using AI in content",
+            "Learn about AI-powered content platforms and tools"
+        ],
+        "duration": "1 day",
+        "level": "Beginner to Intermediate",
+        "ideal_for": [
+            "Content Creators",
+            "Digital Marketers",
+            "Entrepreneurs",
+            "Tech Enthusiasts"
+        ],
+        "image": "ai-in-content-creation"
+    }
+]
