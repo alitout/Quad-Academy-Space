@@ -4,6 +4,7 @@ import Highlights from '../Components/LandingPage/Highlights';
 import Navbar from '../Components/Navbar/Navbar';
 import MasterClasses from '../Components/LandingPage/MasterClasses';
 import OurPrograms from '../Components/LandingPage/OurPrograms';
+import Footer from '../Components/LandingPage/Footer';
 
 function LandingPage() {
     return (
@@ -13,6 +14,7 @@ function LandingPage() {
             <Highlights />
             <OurPrograms />
             <MasterClasses />
+            <Footer />
         </div>
     )
 }
