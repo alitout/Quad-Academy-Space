@@ -39,7 +39,7 @@ const MasterClasses = () => {
     return (
         <div
             id='master-classes'
-            className="MasterClasses py-4 py-md-5">
+            className="MasterClasses pt-4 pt-md-5 pb-5">
             <div className='container py-3'>
                 <div className="d-flex flex-column align-items-center">
                     <h2 className="title">
