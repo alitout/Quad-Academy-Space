@@ -74,6 +74,12 @@ const ResponsiveNavbar = () => {
                                 >
                                     Community
                                 </Nav.Link>
+                                <a
+                                    className='btn bg-pink border-0 p-3 text-white fs-1_125 fw-600'
+                                    href="/sign-in"
+                                >
+                                    Sign in
+                                </a>
                             </Nav>
                         </Offcanvas.Body>
                     </Navbar.Offcanvas>
