@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Logo from '../Logo/Logo';
+import { USER_LOGIN } from '../../externalApi/ExternalUrls';
 
 function LoginForm() {
     const navigate = useNavigate();
@@ -31,6 +32,10 @@ function LoginForm() {
         navigate('/');
     };
 
+    const navigateToSignUp = () => {
+        navigate('/sign-up');
+    }
+
     const login = async (e) => {
         e.preventDefault();
         const usernameRegex = /^[a-zA-Z0-9]+$/;
@@ -42,12 +47,13 @@ function LoginForm() {
 
         if (isUsernameValid && !isPasswordEmpty) {
             const loginRequest = {
-                "Username": username,
-                "UserPassword": password
+                "username": username,
+                "password": password
             };
 
             try {
-                
+                const response = await axios.post(USER_LOGIN, loginRequest);
+
                 navigate(`/dashboard`);
 
             } catch (error) {
@@ -60,8 +66,14 @@ function LoginForm() {
     return (
         <div className='d-flex flex-column gap-5'>
             <Logo />
+            {failedToLogin && (
+                <div className="text-pink text-center">
+                    {failedToLogin}
+                </div>
+            )}
             <div className='LoginForm text-center d-flex flex-column align-items-center'>
                 <form className="inputs d-flex flex-column col-12 gap-4 px-3">
+                    <h2 className="fw-700 fs-2 text-white">Sign In</h2>
                     <div className="d-flex flex-column">
                         <div className="input input-email d-flex flex-column mb-1_25 gap-2">
                             <label className="text-black fs-3 fw-500 align-self-start">
@@ -110,14 +122,21 @@ function LoginForm() {
                         Login
                     </button>
                     <a
-                    className="forgotPassword d-flex flex-row justify-content-center align-items-center text-decoration-none text-white px-3 fw-500"
-                    style={{ cursor: 'pointer' }}
-                >
-                    Forgot password?
-                </a>
+                        className="forgotPassword d-flex flex-row justify-content-center align-items-center text-decoration-none text-white px-3 fw-500"
+                        style={{ cursor: 'pointer' }}
+                    >
+                        Forgot password?
+                    </a>
                 </form>
                 <a
-                    className="backToLogin d-flex flex-row justify-content-center align-items-center text-decoration-none text-white px-3 fw-500"
+                    className="SignUpLink d-flex flex-row justify-content-center align-items-center text-decoration-none text-white px-3 fw-500"
+                    onClick={navigateToSignUp}
+                    style={{ cursor: 'pointer' }}
+                >
+                    Don't have an Account? Sign Up
+                </a>
+                <a
+                    className="backToHome d-flex flex-row justify-content-center align-items-center text-decoration-none text-white px-3 fw-500"
                     onClick={navigateToHome}
                     style={{ cursor: 'pointer' }}
                 >

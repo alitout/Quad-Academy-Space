@@ -1,7 +1,7 @@
 import React from 'react'
-import LoginForm from '../Components/LandingPage/LoginForm'
+import LoginForm from '../Components/SignInPage/LoginForm'
 
-function SignIn() {
+function SignInPage() {
   return (
     <div className='SignInPage d-flex justify-content-center align-items-center'>
       <LoginForm />
@@ -9,4 +9,4 @@ function SignIn() {
   )
 }
 
-export default SignIn
+export default SignInPage
