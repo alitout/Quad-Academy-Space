@@ -165,14 +165,16 @@ a.nav-link {
     }
 }
 
-.SignInPage {
+.SignInPage, 
+.SignUpPage {
     height: 100vh;
     background-image: url('../assets/heroSectionBg.svg');
     background-repeat: no-repeat;
     background-size: cover;
 }
 
-.LoginForm {
+.LoginForm,
+.SignUpForm {
     margin: auto;
     max-width: 30rem;
     background-color: rgba($color: $cyan-blue, $alpha: 0.8);
@@ -214,8 +216,11 @@ a.nav-link {
         }
     }
 
+    .backToHome,
+    .forgotPassword,
     .backToLogin,
-    .forgotPassword {
+    .SignUpLink {
+        cursor: 'pointer' !important;
         transition: color 0.3s ease-in-out !important;
 
         &:hover {
