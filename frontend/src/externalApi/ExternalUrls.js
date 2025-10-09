@@ -1,4 +1,4 @@
-const BASE_URL = 'process.env.REACT_APP_API_BASE';
+const BASE_URL = process.env.REACT_APP_API_BASE;
 
 // Header
 export const HEADER = {
