@@ -1,9 +1,10 @@
-require('dotenv').config();
+import 'dotenv/config';
 
-const express = require('express');
-const mongoose = require('mongoose');
-const cors = require('cors');
-const routes = require('./Routes/routes');
+import express from 'express';
+import mongoose from 'mongoose';
+import cors from 'cors';
+import routes from './Routes/routes.js';
+import userRouter from './Routes/User/userRoutes.js'; // import the userRoutes file
 
 const mongoString = process.env.DATABASE_URL;
 
@@ -25,7 +26,6 @@ app.use(express.json());
 app.use('/', routes);
 
 // User Routes
-const userRouter = require('./Routes/User/userRoutes'); // import the userRoutes file
 app.use('/', userRouter); // use the userRoutes file
 
 const PORT = process.env.PORT;

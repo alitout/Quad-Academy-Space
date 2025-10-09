@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const UserSchema = new mongoose.Schema({
     userID: {
@@ -16,7 +16,7 @@ const UserSchema = new mongoose.Schema({
     },
 });
 
-UserSchema.pre('save', async function(next) {
+UserSchema.pre('save', async function (next) {
     if (this.isNew && !this.userID) {
         const lastUser = await mongoose.model('User').findOne({}, {}, { sort: { userID: -1 } });
         let nextID = 1;
@@ -31,4 +31,5 @@ UserSchema.pre('save', async function(next) {
     next();
 });
 
-module.exports = mongoose.model('User', UserSchema);
+const User = mongoose.model('User', UserSchema);
+export default User;

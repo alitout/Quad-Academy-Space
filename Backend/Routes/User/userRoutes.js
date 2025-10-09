@@ -1,5 +1,5 @@
-const express = require('express');
-const UserController = require('../../Controllers/User/userController');
+import express from 'express';
+import UserController from '../../Controllers/User/userController.js';    
 const router = express.Router();
 
 router.post('/api/user/add', UserController.addUser);
@@ -7,4 +7,4 @@ router.put('/api/user/update/:userID', UserController.updateUser);
 router.delete('/api/user/delete/:userID', UserController.deleteUser);
 router.post('/api/user/login', UserController.loginUser);
 
-module.exports = router;
+export default router;

@@ -14,7 +14,7 @@ const Routes = () => {
         { path: '/community', element: <LandingPage /> },
         { path: '/academycoffeespace', element: <LandingPage /> },
         { path: '/sign-up', element: <SignUpPage /> },
-        { path: '/sign-in', element: <SignInPage />}
+        { path: '/sign-in', element: <SignInPage /> }
     ]);
 
     return routes;

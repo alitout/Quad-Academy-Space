@@ -1,4 +1,4 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
 
 //Post Method
@@ -26,4 +26,4 @@ router.delete('/delete/:id', (req, res) => {
     res.send('Delete by ID API')
 })
 
-module.exports = router; // export the router to be used in the index.js file
+export default router;

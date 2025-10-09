@@ -1,13 +1,14 @@
-const User = require('../../Models/User/userModel');
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
-const hashPassword = require('../../Functions/hashPassword');
+import User from '../../Models/User/userModel.js';
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
+import hashPassword from '../../Functions/hashPassword.js';
+import { generateAccessToken, generateRefreshToken } from '../../Functions/auth.js'
 
 const secretKey = process.env.JWT_SECRET_KEY;
 
 // add User
-const addUser = async (request, response) => {
-    const { username, password } = request.body;
+const addUser = async (req, res) => {
+    const { username, password } = req.body;
     const hashedPassword = await hashPassword(password);
     const newUser = new User({
         username: username,
@@ -16,31 +17,31 @@ const addUser = async (request, response) => {
     try {
         const oldUser = await User.findOne({ username: username });
         if (oldUser) {
-            return response.status(400).json({ message: "Username already exists" });
+            return res.status(400).json({ msg: "Username already exists" });
         }
         await newUser.save();
-        return response.status(201).json({ message: "User created successfully" });
+        return res.status(201).json({ msg: "User created successfully" });
     } catch (error) {
         console.error(error);
-        return response.status(500).json({ message: error.message });
+        return res.status(500).json({ msg: error.msg });
     }
 };
 
 //  Update User
-const updateUser = async (request, response) => {
-    const { userID } = request.params;
-    const { currentPassword, newUsername, newPassword } = request.body;
+const updateUser = async (req, res) => {
+    const { userID } = req.params;
+    const { currentPassword, newUsername, newPassword } = req.body;
 
     try {
         const user = await User.findById(userID);
         if (!user) {
-            return response.status(404).json({ message: "User not found." });
+            return res.status(404).json({ msg: "User not found." });
         }
 
         // Verify current password
         const isMatch = await bcrypt.compare(currentPassword, user.password);
         if (!isMatch) {
-            return response.status(401).json({ message: "Incorrect password." });
+            return res.status(401).json({ msg: "Incorrect password." });
         }
 
         // Update fields
@@ -48,64 +49,62 @@ const updateUser = async (request, response) => {
         if (newPassword) user.password = await hashPassword(newPassword);
 
         await user.save();
-        return response.status(200).json({ message: "User updated successfully." });
+        return res.status(200).json({ msg: "User updated successfully." });
 
     } catch (error) {
         console.error("Update error:", error);
-        return response.status(500).json({ message: "Internal server error." });
+        return res.status(500).json({ msg: "Internal server error." });
     }
 };
 
 // Delete User with username and password confirmation
-const deleteUser = async (request, response) => {
-    const { userID } = request.params;
-    const { username, password } = request.body;
+const deleteUser = async (req, res) => {
+    const { userID } = req.params;
+    const { username, password } = req.body;
 
     try {
         const user = await User.findById(userID);
         if (!user) {
-            return response.status(404).json({ message: "User not found" });
+            return res.status(404).json({ msg: "User not found" });
         }
 
         // Confirm username
         if (user.username !== username) {
-            return response.status(401).json({ message: "Incorrect username" });
+            return res.status(401).json({ msg: "Incorrect username" });
         }
 
         // Confirm password
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
-            return response.status(401).json({ message: "Incorrect password" });
+            return res.status(401).json({ msg: "Incorrect password" });
         }
 
         await User.findByIdAndDelete(userID);
-        return response.status(200).json({ message: "User deleted successfully" });
+        return res.status(200).json({ msg: "User deleted successfully" });
     } catch (error) {
         console.error(error);
-        return response.status(500).json({ message: "Internal server error" });
+        return res.status(500).json({ msg: "Internal server error" });
     }
 };
 
 // User Login
-const loginUser = async (request, response) => {
-    const { username, password } = request.body;
+const loginUser = async (req, res) => {
+    const { username, password } = req.body;
     try {
         const user = await User.findOne({ username: username });
         if (!user) {
-            return response.status(404).json({ message: "User not found" });
+            return res.status(404).json({ msg: "User not found" });
         }
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
-            return response.status(401).json({ message: "Invalid credentials" });
+            return res.status(401).json({ msg: "Invalid credentials" });
         }
-        const token = jwt.sign({ id: user._id }, secretKey);
-        return response.status(200).json({ message: "Login successful", token: token });
     } catch (error) {
         console.error(error);
-        return response.status(500).json({ message: "Internal server error" });
+        return res.status(500).json({ msg: "Internal server error" });
     }
 };
-module.exports = {
+export default {
     addUser,
     updateUser,
     deleteUser,
