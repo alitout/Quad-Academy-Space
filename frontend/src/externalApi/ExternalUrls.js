@@ -17,3 +17,6 @@ export const USER_UPDATE_BY_ID = (userID) => `${BASE_URL}/user/update/${userID}`
 
 // Delete User
 export const USER_DELETE_BY_ID = (userID) => `${BASE_URL}/user/delete/${userID}`;
+
+// Verify Token
+export const VERIFY_TOKEN = `${BASE_URL}/auth/verifyToken`;

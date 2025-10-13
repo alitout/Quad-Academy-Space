@@ -4,7 +4,7 @@ import axios from 'axios';
 import Logo from '../Logo/Logo';
 import { USER_LOGIN } from '../../externalApi/ExternalUrls';
 
-function LoginForm() {
+function LoginForm({ onLoginSuccess }) {
     const navigate = useNavigate();
 
     // State Variables
@@ -13,6 +13,7 @@ function LoginForm() {
     const [isUsernameValid, setIsUsernameValid] = useState(true);
     const [isPasswordEmpty, setIsPasswordEmpty] = useState(false);
     const [failedToLogin, setFailedToLogin] = useState(null);
+    const [loading, setLoading] = useState(false);
 
     // Event handlers
     const handleUsernameChange = (e) => {
@@ -27,6 +28,7 @@ function LoginForm() {
         setFailedToLogin(null);
     };
 
+
     // navigations
     const navigateToHome = () => {
         navigate('/');
@@ -38,6 +40,7 @@ function LoginForm() {
 
     const login = async (e) => {
         e.preventDefault();
+
         const usernameRegex = /^[a-zA-Z0-9]+$/;
         const isUsernameValid = usernameRegex.test(username);
         const isPasswordEmpty = password.trim() === '';
@@ -45,23 +48,28 @@ function LoginForm() {
         setIsUsernameValid(isUsernameValid);
         setIsPasswordEmpty(isPasswordEmpty);
 
-        if (isUsernameValid && !isPasswordEmpty) {
-            const loginRequest = {
-                "username": username,
-                "password": password
-            };
+        if (!isUsernameValid || isPasswordEmpty) return;
 
-            try {
-                const response = await axios.post(USER_LOGIN, loginRequest);
+        setLoading(true);
+        const loginRequest = { username, password };
 
-                navigate(`/dashboard`);
+        try {
+            const res = await axios.post(USER_LOGIN, loginRequest);
 
-            } catch (error) {
-                console.log(error);
-                setFailedToLogin("Failed to login. Please check your credentials and try again.");
+            if (res.data && res.data.bearerToken) {
+                // ✅ Let parent handle token saving + navigation
+                onLoginSuccess(res.data.bearerToken);
+            } else {
+                setFailedToLogin('Failed to login. Please check your credentials.');
             }
-        };
+        } catch (error) {
+            console.error('Login error:', error);
+            setFailedToLogin('Failed to login. Please check your credentials.');
+        } finally {
+            setLoading(false);
+        }
     };
+
 
     return (
         <div className='d-flex flex-column gap-5'>

@@ -1,10 +1,13 @@
-import 'dotenv/config';
-
 import express from 'express';
+import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import cors from 'cors';
 import routes from './Routes/routes.js';
+import authRoutes from './Routes/authRoutes.js';
 import userRouter from './Routes/User/userRoutes.js'; // import the userRoutes file
+
+dotenv.config();
+
 
 const mongoString = process.env.DATABASE_URL;
 
@@ -24,6 +27,9 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use('/', routes);
+
+// Auth Routes
+app.use('/', authRoutes); // use the authRoutes file
 
 // User Routes
 app.use('/', userRouter); // use the userRoutes file

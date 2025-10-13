@@ -99,6 +99,20 @@ const loginUser = async (req, res) => {
         if (!isMatch) {
             return res.status(401).json({ msg: "Invalid credentials" });
         }
+        const accessToken = generateAccessToken(user);
+        const refreshToken = generateRefreshToken(user);
+        const token = {
+            accessToken: accessToken,
+            refreshToken: refreshToken
+        };
+        res.status(200).json({
+            msg: "Login successful",
+            data: {
+                userID: user.userID,
+                username: user.username
+            },
+            bearerToken: accessToken,
+        });
     } catch (error) {
         console.error(error);
         return res.status(500).json({ msg: "Internal server error" });
