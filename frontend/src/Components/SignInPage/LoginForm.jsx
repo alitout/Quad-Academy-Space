@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Logo from '../Logo/Logo';
 import { USER_LOGIN } from '../../externalApi/ExternalUrls';
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 function LoginForm({ onLoginSuccess }) {
     const navigate = useNavigate();
@@ -14,6 +15,7 @@ function LoginForm({ onLoginSuccess }) {
     const [isPasswordEmpty, setIsPasswordEmpty] = useState(false);
     const [failedToLogin, setFailedToLogin] = useState(null);
     const [loading, setLoading] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
 
     // Event handlers
     const handleUsernameChange = (e) => {
@@ -107,15 +109,24 @@ function LoginForm({ onLoginSuccess }) {
                             <label className="text-black fs-3 fw-500 align-self-start">
                                 Password
                             </label>
-                            <input
-                                id='password'
-                                type="password"
-                                label="password"
-                                for="password"
-                                placeholder="••••••••"
-                                value={password}
-                                onChange={handlePasswordChange}
-                            />
+                            <div className="password-wrapper position-relative">
+                                <input
+                                    id='password'
+                                    type={showPassword ? "text" : "password"}
+                                    label="password"
+                                    for="password"
+                                    placeholder="••••••••"
+                                    value={password}
+                                    onChange={handlePasswordChange}
+                                    className="pe-5" // space for the icon
+                                />
+                                <span
+                                    className="toggle-password"
+                                    onClick={() => setShowPassword(!showPassword)}
+                                >
+                                    {showPassword ? <FaEyeSlash /> : <FaEye />}
+                                </span>
+                            </div>
                             {isPasswordEmpty && (
                                 <div className="text-pink align-self-start">
                                     Password can't be empty

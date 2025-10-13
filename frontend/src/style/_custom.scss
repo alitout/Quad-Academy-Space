@@ -4,6 +4,9 @@
 @import './margin.scss';
 @import './padding.scss';
 
+// Custom styles
+
+// Home Page
 .title{
     color: $black;
     font-weight: 500;
@@ -22,4 +25,24 @@
     height: 12rem;
     object-fit: cover;
     border-bottom: 1px solid $gray-100;
+}
+
+// Password Input Toggle
+.password-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.toggle-password {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #333;
+  font-size: 1.2rem;
+}
+
+.toggle-password:hover {
+  color: $pink;
 }
