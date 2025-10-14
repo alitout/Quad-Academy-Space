@@ -121,10 +121,10 @@ const ResponsiveNavbar = () => {
                                     isSignedIn ? (
                                         <Nav.Link
                                             active={false}
-                                            href="/dashboard"
+                                            href="/dashboard/profile"
                                             onClick={(e) => {
                                                 e.preventDefault();
-                                                window.location.href = '/dashboard';
+                                                window.location.href = '/dashboard/profile';
                                                 handleClose();
                                             }}
                                         >

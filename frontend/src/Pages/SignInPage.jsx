@@ -14,7 +14,7 @@ function SignInPage() {
   const handleLoginSuccess = (token) => {
     localStorage.setItem('bearerToken', token);
     setBearerToken(token);
-    navigate('/dashboard');
+    navigate('/dashboard/profile');
   };
 
   useEffect(() => {
@@ -37,7 +37,7 @@ function SignInPage() {
 
         if (data.valid) {
           // Valid token → go to dashboard
-          navigate('/dashboard');
+          navigate('/dashboard/profile');
         } else {
           // Invalid/expired token → clear it
           localStorage.removeItem('bearerToken');

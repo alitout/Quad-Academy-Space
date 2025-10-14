@@ -72,7 +72,7 @@ function SignUpPage() {
             try {
                 const response = await axios.post(USER_REGISTER, registerRequest);
                 setRegisterSuccess("Registration successful! You can now log in.");
-                navigate(`/dashboard`);
+                navigate('/dashboard/profile');
 
             } catch (error) {
                 console.log(error);
