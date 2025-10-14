@@ -2,7 +2,7 @@ import User from '../../Models/User/userModel.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import hashPassword from '../../Functions/hashPassword.js';
-import { generateAccessToken, generateRefreshToken } from '../../Functions/auth.js'
+import { generateAccessToken, generateRefreshToken, verifyToken } from '../../Functions/auth.js'
 
 const secretKey = process.env.JWT_SECRET_KEY;
 
@@ -118,9 +118,31 @@ const loginUser = async (req, res) => {
         return res.status(500).json({ msg: "Internal server error" });
     }
 };
+
+// Get Self User
+const getSelfUser = [
+    verifyToken,
+    async (req, res) => {
+        try {
+            const user = await User.findOne({ userID: req.user.userID });
+            if (!user) {
+                return res.status(404).send("المستخدم غير موجود");
+            }
+            res.status(200).json({
+                userID: user.userID,
+                username: user.username
+            });
+        } catch (error) {
+            res.status(400).json({ error: error.message });
+        }
+    }
+];
+
+
 export default {
     addUser,
     updateUser,
     deleteUser,
-    loginUser
+    loginUser,
+    getSelfUser
 };

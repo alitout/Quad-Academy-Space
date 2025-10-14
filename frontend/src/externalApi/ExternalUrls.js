@@ -12,6 +12,9 @@ export const USER_REGISTER = `${BASE_URL}/user/add`;
 // Login User
 export const USER_LOGIN = `${BASE_URL}/user/login`;
 
+// Get Self
+export const USER_GETSELF = `${BASE_URL}/user/getSelf`;
+
 // Update User
 export const USER_UPDATE_BY_ID = (userID) => `${BASE_URL}/user/update/${userID}`;
 
