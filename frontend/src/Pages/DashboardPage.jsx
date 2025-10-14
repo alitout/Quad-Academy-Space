@@ -33,21 +33,25 @@ function DashboardPage() {
                     { headers: { 'Content-Type': 'application/json' } }
                 );
 
-                const data = res.data;
-
-                if (!data.valid) {
-                    // Invalid/expired token → clear it and go to sign-in page
+                if (!res.data.valid) {
                     localStorage.removeItem('bearerToken');
                     setBearerToken(null);
                     navigate('/sign-in');
+                    return;
                 }
-                else {
-                    setLoading(false);
+
+                setLoading(false);
+            } catch (err) {
+                if (err.response && (err.response.status === 401 || err.response.status === 403)) {
+                    localStorage.removeItem('bearerToken');
+                    setBearerToken(null);
+                    navigate('/sign-in');
+                    return;
                 }
+
+                setLoading(false);
             }
-            catch (err) {
-            }
-        }
+        };
 
         verifyToken();
     }, [bearerToken, navigate]);
@@ -81,7 +85,7 @@ function DashboardPage() {
                             <button className="btn bg-pink" type="button" data-bs-toggle="offcanvas" data-bs-target="#staticBackdrop" aria-controls="staticBackdrop">
                                 <Menu01 />
                             </button>
-                            <div className="offcanvas offcanvas-start" data-bs-backdrop="static" tabindex="-1" id="staticBackdrop" aria-labelledby="staticBackdropLabel"  style={{ maxWidth: '16rem' }}>
+                            <div className="offcanvas offcanvas-start" data-bs-backdrop="static" tabindex="-1" id="staticBackdrop" aria-labelledby="staticBackdropLabel" style={{ maxWidth: '16rem' }}>
                                 <div className="offcanvas-body p-0">
                                     <NavigationsMenu toggleMenu={toggleMenu} />
                                 </div>
