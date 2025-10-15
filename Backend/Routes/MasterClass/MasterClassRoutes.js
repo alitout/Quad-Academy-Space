@@ -4,7 +4,7 @@ import MasterClassController from '../../Controllers/MasterClass/MasterClassCont
 const router = express.Router();
 
 router.post('/api/masterclasses/add', MasterClassController.addMasterClass);
-router.put('/api/masterclasses/update/:masterClassID', MasterClassController.updateMasterClass);
+router.patch('/api/masterclasses/update/:masterClassID', MasterClassController.updateMasterClass);
 router.delete('/api/masterclasses/delete/:masterClassID', MasterClassController.deleteMasterClass);
 router.get('/api/masterclasses/getAll', MasterClassController.getAllMasterClasses);
 router.get('/api/masterclasses/getByID/:masterClassID', MasterClassController.getMasterClassByID);
