@@ -39,17 +39,17 @@ const updateMasterClass = async (req, res) => {
             return res.status(404).json({ msg: "MasterClass not found" });
         }
 
-        if (title) masterClass.title = title;
-        if (brief) masterClass.brief = brief;
-        if (full_description) masterClass.full_description = full_description;
-        if (key_takeaways) masterClass.key_takeaways = key_takeaways;
-        if (duration) masterClass.duration = duration;
-        if (level) masterClass.level = level;
-        if (idealFor) masterClass.idealFor = idealFor;
-        if (date) masterClass.date = date;
-        if (cost) masterClass.cost = cost;
-        if (image) masterClass.image = image;
-        if (isAvailable) masterClass.isAvailable = isAvailable;
+        if (title !== undefined) masterClass.title = title;
+        if (brief !== undefined) masterClass.brief = brief;
+        if (full_description !== undefined) masterClass.full_description = full_description;
+        if (key_takeaways !== undefined) masterClass.key_takeaways = key_takeaways;
+        if (duration !== undefined) masterClass.duration = duration;
+        if (level !== undefined) masterClass.level = level;
+        if (idealFor !== undefined) masterClass.idealFor = idealFor;
+        if (date !== undefined) masterClass.date = date;
+        if (cost !== undefined) masterClass.cost = cost;
+        if (image !== undefined) masterClass.image = image;
+        if (isAvailable !== undefined) masterClass.isAvailable = isAvailable;
         await masterClass.save();
         return res.status(200).json({ msg: "MasterClass updated successfully" });
     }
