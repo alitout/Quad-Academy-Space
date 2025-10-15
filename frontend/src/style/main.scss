@@ -160,12 +160,20 @@ a.nav-link {
     color: white !important;
     transition: background-color 0.3s ease-in-out !important;
 
+    &.text-pink {
+        color: $pink !important;
+    }
+
+    &.text-cyan-blue {
+        color: $cyan-blue !important;
+    }
+
     &:hover {
         background-color: darken($cyan-blue, 5%) !important;
     }
 }
 
-.SignInPage, 
+.SignInPage,
 .SignUpPage {
     height: 100vh;
     background-image: url('../assets/heroSectionBg.svg');
@@ -234,4 +242,20 @@ a.nav-link {
     color: $cyan-blue !important;
     font-weight: 600 !important;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 0.5rem;
+    overflow: hidden;
+}
+
+.functionButton {
+    border: 1px solid $pink !important;
+
+    &:hover {
+        background-color: darken($pink, 10%) !important;
+        color: $white !important;
+    }
 }

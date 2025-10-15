@@ -34,13 +34,13 @@ const updateProgram = async (req, res) => {
             return res.status(404).json({ msg: "Program not found." });
         }
         // Update fields
-        if (title) program.title = title;
-        if (brief) program.brief = brief;
-        if (full_description) program.full_description = full_description;
-        if (date) program.date = date;
-        if (cost) program.cost = cost;
-        if (image) program.image = image;
-        if (isAvailable) program.isAvailable = isAvailable;
+        if (title !== undefined) program.title = title;
+        if (brief !== undefined) program.brief = brief;
+        if (full_description !== undefined) program.full_description = full_description;
+        if (date !== undefined) program.date = date;
+        if (cost !== undefined) program.cost = cost;
+        if (image !== undefined) program.image = image;
+        if (isAvailable !== undefined) program.isAvailable = isAvailable;
         await program.save();
         return res.status(200).json({ msg: "Program updated successfully." });
     } catch (error) {
