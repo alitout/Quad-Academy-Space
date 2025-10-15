@@ -29,6 +29,11 @@ const ProgramSchema = new mongoose.Schema({
     image: {
         type: String,
         required: true
+    },
+    isAvailable: {
+        type: Boolean,
+        required: true,
+        default: true
     }
 })
 

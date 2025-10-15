@@ -32,7 +32,7 @@ const addMasterClass = async (req, res) => {
 // Update MasterClass
 const updateMasterClass = async (req, res) => {
     const { masterClassID } = req.params;
-    const { title, brief, full_description, key_takeaways, duration, level, idealFor, date, cost, image } = req.body;
+    const { title, brief, full_description, key_takeaways, duration, level, idealFor, date, cost, image, isAvailable } = req.body;
     try {
         const masterClass = await MasterClass.findOne({ masterClassID: masterClassID });
         if (!masterClass) {
@@ -49,6 +49,7 @@ const updateMasterClass = async (req, res) => {
         if (date) masterClass.date = date;
         if (cost) masterClass.cost = cost;
         if (image) masterClass.image = image;
+        if (isAvailable) masterClass.isAvailable = isAvailable;
         await masterClass.save();
         return res.status(200).json({ msg: "MasterClass updated successfully" });
     }

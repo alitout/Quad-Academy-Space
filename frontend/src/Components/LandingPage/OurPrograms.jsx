@@ -136,13 +136,15 @@ function OurPrograms() {
 
                 {/* Gallery */}
                 <div className="row">
-                    {programs.map((program) => (
-                        <div className="col-md-4 d-flex justify-content-center" key={program.id}>
-                            <ProgramCard
-                                {...program}
-                            />
-                        </div>
-                    ))}
+                    {programs
+                        .filter(program => program.isAvailable)
+                        .map((program) => (
+                            <div className="col-md-4 d-flex justify-content-center" key={program.id}>
+                                <ProgramCard
+                                    {...program}
+                                />
+                            </div>
+                        ))}
                 </div>
             </div>
         </div>

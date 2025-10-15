@@ -35,7 +35,9 @@ const MasterClasses = () => {
 
     useEffect(() => {
         axios.get(MASTERCLASS_GET_ALL)
-            .then(res => setMasterclasses(res.data))
+            .then(res => {
+                setMasterclasses(res.data);
+            })
             .catch(err => console.error(err));
     }, []);
 
@@ -66,7 +68,6 @@ const MasterClasses = () => {
                         Lorem Ipsum is simply dummy text of the printing.
                     </p>
                 </div>
-
                 <Carousel
                     activeIndex={currentIndex}
                     onSelect={handleSelect}
@@ -75,25 +76,26 @@ const MasterClasses = () => {
                     interval={5000}
                     nextIcon={<span className="carousel-control-next-icon" aria-hidden="true" />}
                     prevIcon={<span className="carousel-control-prev-icon" aria-hidden="true" />}>
-                    {masterclasses.map((masterclass, idx) => (
-                        <Carousel.Item key={idx}>
-                            <div style={{ display: "flex", justifyContent: "center" }}>
-                                <Card key={masterclass.id} style={{ width: "36rem", height: "23rem" }}>
-                                    <Card.Img variant="top" src={ImageMap[masterclass.image]} alt={masterclass.image} />
-                                    <Card.Body className="d-flex flex-column justify-content-between">
-                                        <div>
-                                            <Card.Title>{masterclass.title}</Card.Title>
-                                            <Card.Text>{masterclass.brief}</Card.Text>
-                                        </div>
-                                        <Button className="btn bg-pink border-0 pt-1" onClick={() => handleShowModal(masterclass)}>
-                                            Learn More
-                                        </Button>
-                                    </Card.Body>
-                                </Card>
-                            </div>
-                        </Carousel.Item>
-                    ))}
-
+                    {masterclasses
+                        .filter(masterclass => masterclass.isAvailable)
+                        .map((masterclass, idx) => (
+                            <Carousel.Item key={idx}>
+                                <div style={{ display: "flex", justifyContent: "center" }}>
+                                    <Card key={masterclass.id} style={{ width: "36rem", height: "23rem" }}>
+                                        <Card.Img variant="top" src={ImageMap[masterclass.image]} alt={masterclass.image} />
+                                        <Card.Body className="d-flex flex-column justify-content-between">
+                                            <div>
+                                                <Card.Title>{masterclass.title}</Card.Title>
+                                                <Card.Text>{masterclass.brief}</Card.Text>
+                                            </div>
+                                            <Button className="btn bg-pink border-0 pt-1" onClick={() => handleShowModal(masterclass)}>
+                                                Learn More
+                                            </Button>
+                                        </Card.Body>
+                                    </Card>
+                                </div>
+                            </Carousel.Item>
+                        ))}
                 </Carousel>
 
                 {/* Modal for detailed view */}

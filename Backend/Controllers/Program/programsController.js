@@ -27,7 +27,7 @@ const addProgram = async (req, res) => {
 // Update Program
 const updateProgram = async (req, res) => {
     const { programID } = req.params;
-    const { title, brief, full_description, date, cost, image } = req.body;
+    const { title, brief, full_description, date, cost, image, isAvailable } = req.body;
     try {
         const program = await Program.findOne({ programID: programID });
         if (!program) {
@@ -40,6 +40,7 @@ const updateProgram = async (req, res) => {
         if (date) program.date = date;
         if (cost) program.cost = cost;
         if (image) program.image = image;
+        if (isAvailable) program.isAvailable = isAvailable;
         await program.save();
         return res.status(200).json({ msg: "Program updated successfully." });
     } catch (error) {
