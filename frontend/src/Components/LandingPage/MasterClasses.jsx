@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
-import masterclasses from "../../data/jsons/masterClasses.json";
+import axios from "axios";
 import { Carousel, Card, Button, Modal, Image } from "react-bootstrap";
+
+import { MASTERCLASS_GET_ALL } from "../../externalApi/ExternalUrls";
 
 import contentCamp from "../../data/images/master-classes/content-camp.jpg";
 import publicSpeaking from "../../data/images/master-classes/public-speaking.jpg";
@@ -15,23 +17,38 @@ const ImageMap = {
 };
 
 const MasterClasses = () => {
+    const [masterclasses, setMasterclasses] = useState([]);
     const [showModal, setShowModal] = useState(false);
     const [selectedClass, setSelectedClass] = useState(null);
     const [currentIndex, setCurrentIndex] = useState(0);
 
-    // Handle modal opening
+    // Format date to readable string
+    const formatDate = (date) => {
+        if (!date) return "";
+        const d = new Date(date);
+        const day = String(d.getDate()).padStart(2, '0');
+        const month = String(d.getMonth() + 1).padStart(2, '0');
+        const year = d.getFullYear();
+        return `${day}-${month}-${year}`;
+    };
+
+
+    useEffect(() => {
+        axios.get(MASTERCLASS_GET_ALL)
+            .then(res => setMasterclasses(res.data))
+            .catch(err => console.error(err));
+    }, []);
+
     const handleShowModal = (masterclass) => {
         setSelectedClass(masterclass);
         setShowModal(true);
     };
 
-    // Handle modal closing
     const handleCloseModal = () => {
         setSelectedClass(null);
         setShowModal(false);
     };
 
-    // Handle carousel navigation
     const handleSelect = (selectedIndex) => {
         setCurrentIndex(selectedIndex);
     };
@@ -66,7 +83,7 @@ const MasterClasses = () => {
                                     <Card.Body className="d-flex flex-column justify-content-between">
                                         <div>
                                             <Card.Title>{masterclass.title}</Card.Title>
-                                            <Card.Text>{masterclass.short_description}</Card.Text>
+                                            <Card.Text>{masterclass.brief}</Card.Text>
                                         </div>
                                         <Button className="btn bg-pink border-0 pt-1" onClick={() => handleShowModal(masterclass)}>
                                             Learn More
@@ -90,13 +107,13 @@ const MasterClasses = () => {
                                 <Image
                                     src={ImageMap[selectedClass.image]}
                                     alt={selectedClass.title}
-                                    style={{ width: "100%",  marginBottom: "1rem" }}
+                                    style={{ width: "100%", marginBottom: "1rem" }}
                                 />
-                                <p><strong>{selectedClass.short_description}</strong></p>
-                                <p>{selectedClass.description}</p>
+                                <p><strong>{selectedClass.brief}</strong></p>
+                                <p>{selectedClass.full_description}</p>
                                 <h5>Key Takeaways:</h5>
                                 <ul>
-                                    {selectedClass.key_takeaways.map((takeaway, index) => (
+                                    {selectedClass.key_takeaways?.map((takeaway, index) => (
                                         <li key={index}>{takeaway}</li>
                                     ))}
                                 </ul>
@@ -104,10 +121,12 @@ const MasterClasses = () => {
                                 <p><strong>Level:</strong> {selectedClass.level}</p>
                                 <strong>Ideal For:</strong>
                                 <ul>
-                                    {selectedClass.ideal_for.map((person, index) => (
+                                    {selectedClass.idealFor?.map((person, index) => (
                                         <li key={index}>{person}</li>
                                     ))}
                                 </ul>
+                                <p><strong>Date:</strong> {formatDate(selectedClass.date)}</p>
+                                <p><strong>Cost:</strong> ${selectedClass.cost}</p>
                             </Modal.Body>
                             <Modal.Footer>
                                 <Button variant="secondary" onClick={handleCloseModal}>

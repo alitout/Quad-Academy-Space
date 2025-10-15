@@ -6,6 +6,7 @@ import routes from './Routes/routes.js';
 import authRoutes from './Routes/authRoutes.js';
 import userRouter from './Routes/User/userRoutes.js'; // import the userRoutes file
 import programsRouter from './Routes/Program/programsRoutes.js'; // import the programsRoutes file
+import masterClassRouter from './Routes/MasterClass/MasterClassRoutes.js'; // import the masterClassRoutes file
 
 dotenv.config();
 
@@ -37,6 +38,9 @@ app.use('/', userRouter); // use the userRoutes file
 
 // Program Routes
 app.use('/', programsRouter); // use the programsRoutes file
+
+// MasterClass Routes
+app.use('/', masterClassRouter); // use the masterClassRoutes file
 
 const PORT = process.env.PORT;
 app.listen(PORT, () => {
