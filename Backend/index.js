@@ -5,6 +5,7 @@ import cors from 'cors';
 import routes from './Routes/routes.js';
 import authRoutes from './Routes/authRoutes.js';
 import userRouter from './Routes/User/userRoutes.js'; // import the userRoutes file
+import programsRouter from './Routes/Program/programsRoutes.js'; // import the programsRoutes file
 
 dotenv.config();
 
@@ -33,6 +34,9 @@ app.use('/', authRoutes); // use the authRoutes file
 
 // User Routes
 app.use('/', userRouter); // use the userRoutes file
+
+// Program Routes
+app.use('/', programsRouter); // use the programsRoutes file
 
 const PORT = process.env.PORT;
 app.listen(PORT, () => {

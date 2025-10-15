@@ -2,6 +2,9 @@ import React, { useState } from 'react'
 import programsData from '../../data/jsons/programs.json';
 import { Button, Modal, Card, Image } from 'react-bootstrap';
 
+import axios from 'axios';
+import { PROGRAM_GET_ALL } from '../../externalApi/ExternalUrls';
+
 import mediaProduction from '../../data/images/programs/media-production.jpg';
 import marketingCommunications from '../../data/images/programs/marketing-communications.jpg';
 import graphicDesign from '../../data/images/programs/graphic-design.jpg';
@@ -20,6 +23,17 @@ const ImageMap = {
 const ProgramCard = ({ title, brief, full_description, image, date, cost }) => {
     const [showPopup, setShowPopup] = useState(false);
 
+    // Format date to readable string
+    const formattedDate = date
+        ? (() => {
+            const d = new Date(date);
+            const day = String(d.getDate()).padStart(2, '0');
+            const month = String(d.getMonth() + 1).padStart(2, '0');
+            const year = d.getFullYear();
+            return `${day}-${month}-${year}`;
+        })()
+        : "";
+
     const handleShow = () => setShowPopup(true);
     const handleClose = () => setShowPopup(false);
 
@@ -35,7 +49,7 @@ const ProgramCard = ({ title, brief, full_description, image, date, cost }) => {
                     <Card.Title>{title}</Card.Title>
                     <Card.Text className="text-muted">{brief}</Card.Text>
                     <p className="text-muted">
-                        <strong>Date:</strong> {date}
+                        <strong>Date:</strong> {formattedDate}
                     </p>
                     <p className="text-muted">
                         <strong>Cost:</strong> ${cost}
@@ -78,7 +92,7 @@ const ProgramCard = ({ title, brief, full_description, image, date, cost }) => {
                     />
                     <p><strong>{brief}</strong></p>
                     <p>{full_description}</p>
-                    <p><strong>Date:</strong> {date}</p>
+                    <p><strong>Date:</strong> {formattedDate}</p>
                     <p><strong>Cost:</strong> ${cost}</p>
                 </Modal.Body>
                 <Modal.Footer>
@@ -93,7 +107,18 @@ const ProgramCard = ({ title, brief, full_description, image, date, cost }) => {
 
 function OurPrograms() {
 
-    const [programs, setPrograms] = useState(programsData);
+    const [programs, setPrograms] = useState([]);
+    React.useEffect(() => {
+        const fetchPrograms = async () => {
+            try {
+                const response = await axios.get(PROGRAM_GET_ALL);
+                setPrograms(response.data);
+            } catch (error) {
+                console.error('Error fetching programs:', error);
+            }
+        };
+        fetchPrograms();
+    }, []);
 
     return (
         <div
