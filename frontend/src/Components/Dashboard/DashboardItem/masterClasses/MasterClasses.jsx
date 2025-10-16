@@ -85,26 +85,32 @@ function MasterClasses() {
                         </tr>
                     </thead>
                     <tbody>
-                        {masterClasses.map(masterClass => (
-                            <tr key={masterClass.masterClassID}>
-                                <td className='border p-2'>{masterClass.masterClassID}</td>
-                                <td className='border p-2'>{masterClass.title}</td>
-                                <td className='border p-2'>
-                                    <button
-                                        className='functionButton me-2 btn text-pink border-pink'
-                                        onClick={() => handleEdit(masterClass)}
-                                    >
-                                        Edit
-                                    </button>
-                                    <button
-                                        className='functionButton btn bg-pink'
-                                        onClick={() => handleDelete(masterClass)}
-                                    >
-                                        Delete
-                                    </button>
-                                </td>
-                            </tr>
-                        ))}
+                        {masterClasses.map(masterClass => {
+                            const disabledRow = !masterClass.isAvailable;
+                            const rowStyle = disabledRow
+                                ? 'bg-light text-muted border p-2'
+                                : '';
+                            return (
+                                <tr key={masterClass.masterClassID}>
+                                    <td className={`border p-2 ${rowStyle}`}>{masterClass.masterClassID}</td>
+                                    <td className={`border p-2 ${rowStyle}`}>{masterClass.title}</td>
+                                    <td className={`border p-2 ${rowStyle}`}>
+                                        <button
+                                            className='functionButton me-2 btn text-pink border-pink'
+                                            onClick={() => handleEdit(masterClass)}
+                                        >
+                                            Edit
+                                        </button>
+                                        <button
+                                            className='functionButton btn bg-pink'
+                                            onClick={() => handleDelete(masterClass)}
+                                        >
+                                            Delete
+                                        </button>
+                                    </td>
+                                </tr>
+                            );
+                        })}
                     </tbody>
                 </table>
             )}

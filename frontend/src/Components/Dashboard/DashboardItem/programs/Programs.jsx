@@ -85,26 +85,32 @@ function Programs() {
                         </tr>
                     </thead>
                     <tbody>
-                        {programs.map(program => (
-                            <tr key={program.programID}>
-                                <td className='border p-2'>{program.programID}</td>
-                                <td className='border p-2'>{program.title}</td>
-                                <td className='border p-2'>
-                                    <button
-                                        className='functionButton me-2 btn text-pink border-pink'
-                                        onClick={() => handleEdit(program)}
-                                    >
-                                        Edit
-                                    </button>
-                                    <button
-                                        className='functionButton btn bg-pink'
-                                        onClick={() => handleDelete(program)}
-                                    >
-                                        Delete
-                                    </button>
-                                </td>
-                            </tr>
-                        ))}
+                        {programs.map(program => {
+                            const disabledRow = !program.isAvailable;
+                            const rowStyle = disabledRow
+                                ? 'bg-light text-muted border p-2'
+                                : '';
+                            return (
+                                <tr key={program.programID}>
+                                    <td className={`border p-2 ${rowStyle}`}>{program.programID}</td>
+                                    <td className={`border p-2 ${rowStyle}`}>{program.title}</td>
+                                    <td className={`border p-2 ${rowStyle}`}>
+                                        <button
+                                            className='functionButton me-2 btn text-pink border-pink'
+                                            onClick={() => handleEdit(program)}
+                                        >
+                                            Edit
+                                        </button>
+                                        <button
+                                            className='functionButton btn bg-pink'
+                                            onClick={() => handleDelete(program)}
+                                        >
+                                            Delete
+                                        </button>
+                                    </td>
+                                </tr>
+                            );
+                        })}
                     </tbody>
                 </table>
             )}
