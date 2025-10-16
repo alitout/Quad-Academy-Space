@@ -183,46 +183,6 @@ a.nav-link {
 
 .LoginForm,
 .SignUpForm {
-    margin: auto;
-    max-width: 30rem;
-    background-color: rgba($color: $cyan-blue, $alpha: 0.8);
-    padding: 2rem;
-    border-radius: 0.5rem;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    align-items: center;
-    text-align: center;
-
-    .input {
-        label {
-            font-size: 1.375rem !important;
-            font-weight: 500;
-            color: $white !important;
-            cursor: text
-        }
-
-        input {
-            border: 1px solid $gray-100;
-            border-radius: 0.375rem;
-            padding: 0.75rem 1rem;
-            font-size: 1rem;
-            transition: border-color 0.3s ease-in-out;
-
-            &:focus {
-                border-color: $cyan-blue;
-                outline: none;
-                box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
-            }
-        }
-    }
-
-    .btn {
-        &:hover {
-            background-color: darken($pink, 5%) !important;
-        }
-    }
 
     .backToHome,
     .forgotPassword,
@@ -232,7 +192,7 @@ a.nav-link {
         transition: color 0.3s ease-in-out !important;
 
         &:hover {
-            color: $pink !important;
+            color: darken($pink, 10%) !important;
         }
     }
 }
@@ -255,7 +215,7 @@ a.nav-link {
     border: 1px solid $pink !important;
 
     &:hover {
-        background-color: darken($pink, 10%) !important;
+        background-color: darken($pink, 5%) !important;
         color: $white !important;
     }
 }

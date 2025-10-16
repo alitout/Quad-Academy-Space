@@ -90,7 +90,7 @@ function NavigationsMenu({ toggleMenu }) {
                 <div className="">
                     <div className='d-flex justify-content-center align-items-center fs-3 fw-700 text-center p-3 py-4 '>
                         <div className='flex-grow-1'>
-                            {name}
+                            Welcome, {name}
                         </div>
                         <div
                             className='uiIcon ps-2 text-reset d-flex d-md-none'

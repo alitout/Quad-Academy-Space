@@ -8,19 +8,17 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 function LoginForm({ onLoginSuccess }) {
     const navigate = useNavigate();
 
-    // State Variables
-    const [username, setUsername] = useState('');
+    const [identifier, setIdentifier] = useState('');
     const [password, setPassword] = useState('');
-    const [isUsernameValid, setIsUsernameValid] = useState(true);
+    const [isIdentifierValid, setIsIdentifierValid] = useState(true);
     const [isPasswordEmpty, setIsPasswordEmpty] = useState(false);
     const [failedToLogin, setFailedToLogin] = useState(null);
     const [loading, setLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
 
-    // Event handlers
-    const handleUsernameChange = (e) => {
-        setUsername(e.target.value);
-        setIsUsernameValid(true);
+    const handleIdentifierChange = (e) => {
+        setIdentifier(e.target.value);
+        setIsIdentifierValid(true);
         setFailedToLogin(null);
     };
 
@@ -30,36 +28,30 @@ function LoginForm({ onLoginSuccess }) {
         setFailedToLogin(null);
     };
 
-
-    // navigations
-    const navigateToHome = () => {
-        navigate('/');
-    };
-
-    const navigateToSignUp = () => {
-        navigate('/sign-up');
-    }
+    const navigateToHome = () => navigate('/');
+    const navigateToSignUp = () => navigate('/sign-up');
 
     const login = async (e) => {
         e.preventDefault();
 
         const usernameRegex = /^[a-zA-Z0-9]+$/;
-        const isUsernameValid = usernameRegex.test(username);
-        const isPasswordEmpty = password.trim() === '';
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const validIdentifier = usernameRegex.test(identifier) || emailRegex.test(identifier);
+        const emptyPassword = password.trim() === '';
 
-        setIsUsernameValid(isUsernameValid);
-        setIsPasswordEmpty(isPasswordEmpty);
-
-        if (!isUsernameValid || isPasswordEmpty) return;
+        setIsIdentifierValid(validIdentifier);
+        setIsPasswordEmpty(emptyPassword);
+        if (!validIdentifier || emptyPassword) return;
 
         setLoading(true);
-        const loginRequest = { username, password };
-
+        const loginRequest = {
+            username: identifier,
+            email: identifier,
+            password: password
+        };
         try {
             const res = await axios.post(USER_LOGIN, loginRequest);
-
             if (res.data && res.data.bearerToken && res.data.refreshToken) {
-                // ✅ Let parent handle token saving + navigation
                 onLoginSuccess(res.data.bearerToken, res.data.refreshToken);
             } else {
                 setFailedToLogin('Failed to login. Please check your credentials.');
@@ -72,98 +64,94 @@ function LoginForm({ onLoginSuccess }) {
         }
     };
 
-
     return (
-        <div className='d-flex flex-column gap-5'>
-            <Logo />
-            {failedToLogin && (
-                <div className="text-pink text-center">
-                    {failedToLogin}
-                </div>
-            )}
-            <div className='LoginForm text-center d-flex flex-column align-items-center'>
-                <form className="inputs d-flex flex-column col-12 gap-4 px-3">
-                    <h2 className="fw-700 fs-2 text-white">Sign In</h2>
-                    <div className="d-flex flex-column">
-                        <div className="input input-email d-flex flex-column mb-1_25 gap-2">
-                            <label className="text-black fs-3 fw-500 align-self-start">
-                                Username
-                            </label>
+        <div className="SignUpForm">
+            <div className="d-flex justify-content-center align-items-center min-vh-100">
+                <div className="card shadow-lg p-5" style={{ maxWidth: '400px', width: '100%', borderRadius: '15px' }}>
+                    <div className="text-center mb-4">
+                        <Logo />
+                        <h2 className="fw-bold mt-3">Sign In</h2>
+                    </div>
+
+                    {failedToLogin && <div className="alert alert-danger">{failedToLogin}</div>}
+
+                    <form onSubmit={login} className="d-flex flex-column gap-3">
+                        <div>
+                            <label className="form-label fw-semibold">Email or Username</label>
                             <input
-                                autoComplete='off'
-                                id='username'
+                                id="identifier"
+                                name="identifier"
+                                autoComplete="username"
                                 type="text"
-                                label="username"
-                                for="username"
-                                placeholder="username"
-                                value={username}
-                                onChange={handleUsernameChange}
+                                className={`form-control ${!isIdentifierValid ? 'is-invalid' : ''}`}
+                                placeholder="email or username"
+                                value={identifier}
+                                onChange={handleIdentifierChange}
                             />
-                            {!isUsernameValid && (
-                                <div className="text-pink align-self-start">
-                                    Username is not valid
-                                </div>
-                            )}
+                            {!isIdentifierValid && <div className="invalid-feedback">Enter a valid username (alphanumeric) or email</div>}
                         </div>
-                        <div className="input input-password d-flex flex-column gap-2">
-                            <label className="text-black fs-3 fw-500 align-self-start">
-                                Password
-                            </label>
-                            <div className="password-wrapper position-relative">
+
+                        <div>
+                            <label className="form-label fw-semibold">Password</label>
+                            <div className="input-group">
                                 <input
-                                    id='password'
-                                    type={showPassword ? "text" : "password"}
-                                    label="password"
-                                    for="password"
+                                    id="password"
+                                    name="password"
+                                    type={showPassword ? 'text' : 'password'}
+                                    className={`form-control ${isPasswordEmpty ? 'is-invalid' : ''}`}
                                     placeholder="••••••••"
                                     value={password}
                                     onChange={handlePasswordChange}
-                                    className="pe-5" // space for the icon
                                 />
                                 <span
-                                    className="toggle-password"
+                                    className="input-group-text"
+                                    style={{ cursor: 'pointer' }}
                                     onClick={() => setShowPassword(!showPassword)}
                                 >
                                     {showPassword ? <FaEyeSlash /> : <FaEye />}
                                 </span>
+                                {isPasswordEmpty && <div className="invalid-feedback d-block">Password can't be empty</div>}
                             </div>
-                            {isPasswordEmpty && (
-                                <div className="text-pink align-self-start">
-                                    Password can't be empty
-                                </div>
-                            )}
                         </div>
+
+                        <button
+                            type="submit"
+                            className="btn bg-cyan-blue fw-bold mt-3"
+                            disabled={loading}
+                        >
+                            {loading ? 'Signing in...' : 'Login'}
+                        </button>
+                    </form>
+
+                    <div className="text-center mt-3">
+                        <a
+                            className="backToLogin text-decoration-none text-pink p-0"
+                            style={{ cursor: 'pointer' }}
+                            onClick={() => {/* implement forgot password navigation if you have one */ }}
+                        >
+                            Forgot password?
+                        </a>
+                        <br />
+                        <a
+                            className="backToLogin text-decoration-none text-pink p-0"
+                            style={{ cursor: 'pointer' }}
+                            onClick={navigateToSignUp}
+                        >
+                            Don't have an account? Sign Up
+                        </a>
+                        <br />
+                        <a
+                            className="backToHome text-decoration-none text-pink p-0 ms-1"
+                            style={{ cursor: 'pointer' }}
+                            onClick={navigateToHome}
+                        >
+                            Back to Home
+                        </a>
                     </div>
-                    <button
-                        className="Sign-in btn bg-pink fw-600 fs-1_125"
-                        onClick={login}
-                    >
-                        Login
-                    </button>
-                    <a
-                        className="forgotPassword d-flex flex-row justify-content-center align-items-center text-decoration-none text-white px-3 fw-500"
-                        style={{ cursor: 'pointer' }}
-                    >
-                        Forgot password?
-                    </a>
-                </form>
-                <a
-                    className="SignUpLink d-flex flex-row justify-content-center align-items-center text-decoration-none text-white px-3 fw-500"
-                    onClick={navigateToSignUp}
-                    style={{ cursor: 'pointer' }}
-                >
-                    Don't have an Account? Sign Up
-                </a>
-                <a
-                    className="backToHome d-flex flex-row justify-content-center align-items-center text-decoration-none text-white px-3 fw-500"
-                    onClick={navigateToHome}
-                    style={{ cursor: 'pointer' }}
-                >
-                    Back to Home
-                </a>
+                </div>
             </div>
         </div>
-    )
+    );
 }
 
-export default LoginForm
+export default LoginForm;

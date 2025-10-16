@@ -5,8 +5,9 @@ const router = express.Router();
 
 router.post('/add', UserController.addUser);
 router.patch('/update/:userID', verifyToken, UserController.updateUser);
-router.delete('/delete/:userID', verifyToken, UserController.deleteUser);
+router.post('/delete/:userID', verifyToken, UserController.deleteUser);
 router.post('/login', UserController.loginUser);
 router.get('/getSelf', verifyToken, UserController.getSelfUser);
+router.patch('/changePassword/:userID', verifyToken, UserController.changeUserPassword);
 
 export default router;

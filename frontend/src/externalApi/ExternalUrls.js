@@ -18,6 +18,9 @@ export const USER_GETSELF = `${BASE_URL}/user/getSelf`;
 // Update User
 export const USER_UPDATE_BY_ID = (userID) => `${BASE_URL}/user/update/${userID}`;
 
+// Change User Password
+export const USER_CHANGE_PASSWORD = (userID) => `${BASE_URL}/user/changePassword/${userID}`;
+
 // Delete User
 export const USER_DELETE_BY_ID = (userID) => `${BASE_URL}/user/delete/${userID}`;
 
