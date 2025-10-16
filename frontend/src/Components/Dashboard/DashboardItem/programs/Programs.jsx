@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import axiosInstance from '../../../../API/axiosInstance';
 import { Modal, Button } from 'react-bootstrap';
 
 import ProgramAdd from './ProgramsAdd';
@@ -54,7 +55,7 @@ function Programs() {
 
     const confirmDelete = async () => {
         try {
-            await axios.delete(PROGRAM_DELETE_BY_ID(selectedProgram.programID));
+            await axiosInstance.delete(PROGRAM_DELETE_BY_ID(selectedProgram.programID));
             setPrograms(programs.filter(p => p.programID !== selectedProgram.programID));
         } catch (err) {
             console.error(err);

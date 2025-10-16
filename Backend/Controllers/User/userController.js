@@ -101,10 +101,7 @@ const loginUser = async (req, res) => {
         }
         const accessToken = generateAccessToken(user);
         const refreshToken = generateRefreshToken(user);
-        const token = {
-            accessToken: accessToken,
-            refreshToken: refreshToken
-        };
+        
         res.status(200).json({
             msg: "Login successful",
             data: {
@@ -112,6 +109,7 @@ const loginUser = async (req, res) => {
                 username: user.username
             },
             bearerToken: accessToken,
+            refreshToken: refreshToken
         });
     } catch (error) {
         console.error(error);

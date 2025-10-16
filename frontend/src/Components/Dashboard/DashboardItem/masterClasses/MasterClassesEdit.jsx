@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import { MASTERCLASS_UPDATE_BY_ID } from '../../../../externalApi/ExternalUrls';
 import { Form } from 'react-bootstrap';
+import axiosInstance from '../../../../API/axiosInstance';
 
 import Trash01 from '@untitled-ui/icons-react/build/cjs/Trash01';
 
@@ -93,7 +93,7 @@ function MasterClassEdit({ masterClass, onSaveSuccess }) {
         if (!validate()) return;
 
         try {
-            await axios.patch(MASTERCLASS_UPDATE_BY_ID(formData.masterClassID), {
+            await axiosInstance.patch(MASTERCLASS_UPDATE_BY_ID(formData.masterClassID), {
                 ...formData,
                 isAvailable: Boolean(formData.isAvailable),
             });

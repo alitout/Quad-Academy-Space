@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import { MASTERCLASS_ADD } from '../../../../externalApi/ExternalUrls';
 import { Form } from 'react-bootstrap';
+import axiosInstance from '../../../../API/axiosInstance';
 
 import Trash01 from '@untitled-ui/icons-react/build/cjs/Trash01';
 
@@ -72,7 +72,7 @@ function MasterClassAdd({ onSaveSuccess }) {
         if (!validate()) return;
 
         try {
-            await axios.post(MASTERCLASS_ADD, {
+            await axiosInstance.post(MASTERCLASS_ADD, {
                 ...formData,
                 isAvailable: Boolean(formData.isAvailable),
             });

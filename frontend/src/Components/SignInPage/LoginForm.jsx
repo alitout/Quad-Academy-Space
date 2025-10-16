@@ -58,9 +58,9 @@ function LoginForm({ onLoginSuccess }) {
         try {
             const res = await axios.post(USER_LOGIN, loginRequest);
 
-            if (res.data && res.data.bearerToken) {
+            if (res.data && res.data.bearerToken && res.data.refreshToken) {
                 // ✅ Let parent handle token saving + navigation
-                onLoginSuccess(res.data.bearerToken);
+                onLoginSuccess(res.data.bearerToken, res.data.refreshToken);
             } else {
                 setFailedToLogin('Failed to login. Please check your credentials.');
             }

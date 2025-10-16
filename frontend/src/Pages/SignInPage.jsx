@@ -9,13 +9,17 @@ function SignInPage() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [bearerToken, setBearerToken] = useState(localStorage.getItem('bearerToken') || null);
+  const [refreshToken, setRefreshToken] = useState(localStorage.getItem('refreshToken') || null);
 
   // Function to handle successful login
-  const handleLoginSuccess = (token) => {
-    localStorage.setItem('bearerToken', token);
-    setBearerToken(token);
+  const handleLoginSuccess = (accessToken, refreshToken) => {
+    localStorage.setItem('bearerToken', accessToken);
+    localStorage.setItem('refreshToken', refreshToken);
+    setBearerToken(accessToken);
+    setRefreshToken(refreshToken);
     navigate('/dashboard/profile');
   };
+
 
   useEffect(() => {
     const verifyToken = async () => {

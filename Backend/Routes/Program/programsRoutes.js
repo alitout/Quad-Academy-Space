@@ -1,12 +1,13 @@
 import express from 'express';
 import ProgramsController from '../../Controllers/Program/programsController.js';
+import { verifyToken } from '../../Functions/auth.js';
 
 const router = express.Router();
 
-router.post('/api/programs/add', ProgramsController.addProgram);
-router.patch('/api/programs/update/:programID', ProgramsController.updateProgram);
-router.delete('/api/programs/delete/:programID', ProgramsController.deleteProgram);
-router.get('/api/programs/getAll', ProgramsController.getAllPrograms);
-router.get('/api/programs/getByID/:programID', ProgramsController.getProgramByID);
+router.post('/add', verifyToken, ProgramsController.addProgram);
+router.patch('/update/:programID', verifyToken, ProgramsController.updateProgram);
+router.delete('/delete/:programID', verifyToken, ProgramsController.deleteProgram);
+router.get('/getAll', ProgramsController.getAllPrograms);
+router.get('/getByID/:programID', ProgramsController.getProgramByID);
 
 export default router;

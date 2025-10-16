@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import { PROGRAM_UPDATE_BY_ID } from '../../../../externalApi/ExternalUrls';
 import { Form } from 'react-bootstrap';
+import axiosInstance from '../../../../API/axiosInstance';
 
 function ProgramEdit({ program, onSaveSuccess }) {
     const [formData, setFormData] = useState({
@@ -56,7 +56,7 @@ function ProgramEdit({ program, onSaveSuccess }) {
         if (!validateForm()) return;
 
         try {
-            await axios.patch(PROGRAM_UPDATE_BY_ID(formData.programID), {
+            await axiosInstance.patch(PROGRAM_UPDATE_BY_ID(formData.programID), {
                 ...formData,
                 isAvailable: formData.isAvailable === true || formData.isAvailable === "true",
             });

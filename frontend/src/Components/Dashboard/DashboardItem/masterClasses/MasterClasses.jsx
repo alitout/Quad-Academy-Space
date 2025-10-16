@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Modal, Button } from 'react-bootstrap';
+import axiosInstance from '../../../../API/axiosInstance';
 
 import { MASTERCLASS_GET_ALL, MASTERCLASS_DELETE_BY_ID } from '../../../../externalApi/ExternalUrls';
 import MasterClassAdd from './MasterClassesAdd';
@@ -54,7 +55,7 @@ function MasterClasses() {
 
     const confirmDelete = async () => {
         try {
-            await axios.delete(MASTERCLASS_DELETE_BY_ID(selectedMasterClass.masterClassID));
+            await axiosInstance.delete(MASTERCLASS_DELETE_BY_ID(selectedMasterClass.masterClassID));
             setMasterClasses(masterClasses.filter(m => m.masterClassID !== selectedMasterClass.masterClassID));
         } catch (err) {
             console.error(err);

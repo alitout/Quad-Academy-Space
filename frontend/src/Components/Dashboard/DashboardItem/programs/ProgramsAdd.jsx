@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import { PROGRAM_ADD } from '../../../../externalApi/ExternalUrls';
+import axiosInstance from '../../../../API/axiosInstance';
 
 function ProgramsAdd({ onSaveSuccess }) {
     const [formData, setFormData] = useState({
@@ -39,7 +39,7 @@ function ProgramsAdd({ onSaveSuccess }) {
         if (!validateForm()) return;
 
         try {
-            await axios.post(PROGRAM_ADD, formData);
+            await axiosInstance.post(PROGRAM_ADD, formData);
             onSaveSuccess();
         } catch (err) {
             console.error(err);

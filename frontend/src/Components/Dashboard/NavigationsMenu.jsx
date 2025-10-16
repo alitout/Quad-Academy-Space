@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom';
 import { routeMap } from '../../Routes/Routes';
-import axios from 'axios';
+import axiosInstance from '../../API/axiosInstance';
 import { USER_GETSELF } from '../../externalApi/ExternalUrls';
 
 // untitled ui icons
@@ -57,11 +57,7 @@ function NavigationsMenu({ toggleMenu }) {
                     return;
                 }
 
-                const res = await axios.get(USER_GETSELF, {
-                    headers: {
-                        Authorization: auth
-                    }
-                });
+                const res = await axiosInstance.get(USER_GETSELF);
 
                 setName(res.data.username);
             } catch (error) {

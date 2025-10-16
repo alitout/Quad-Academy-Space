@@ -31,16 +31,16 @@ app.use(express.json());
 app.use('/', routes);
 
 // Auth Routes
-app.use('/', authRoutes); // use the authRoutes file
+app.use('/api/auth', authRoutes); // use the authRoutes file
 
 // User Routes
-app.use('/', userRouter); // use the userRoutes file
+app.use('/api/user', userRouter); // use the userRoutes file
 
 // Program Routes
-app.use('/', programsRouter); // use the programsRoutes file
+app.use('/api/programs', programsRouter); // use the programsRoutes file
 
 // MasterClass Routes
-app.use('/', masterClassRouter); // use the masterClassRoutes file
+app.use('/api/masterclasses', masterClassRouter); // use the masterClassRoutes file
 
 const PORT = process.env.PORT;
 app.listen(PORT, () => {
