@@ -14,10 +14,21 @@ function ProgramsAdd({ onSaveSuccess }) {
     });
 
     const [errors, setErrors] = useState({});
+    const [apiError, setApiError] = useState('');
+    const [submitting, setSubmitting] = useState(false);
 
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
         setFormData({ ...formData, [name]: type === 'checkbox' ? checked : value });
+        // Clear field error as user edits
+        if (errors[name]) {
+            setErrors(prev => {
+                const next = { ...prev };
+                delete next[name];
+                return next;
+            });
+        }
+        if (apiError) setApiError('');
     };
 
     const validateForm = () => {
@@ -36,14 +47,45 @@ function ProgramsAdd({ onSaveSuccess }) {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setApiError('');
         if (!validateForm()) return;
 
+        setSubmitting(true);
         try {
             await axiosInstance.post(PROGRAM_ADD, formData);
+            setSubmitting(false);
+            setFormData({
+                title: '',
+                brief: '',
+                full_description: '',
+                date: '',
+                cost: '',
+                image: '',
+                isAvailable: true,
+            });
+            setErrors({});
             onSaveSuccess();
         } catch (err) {
+            setSubmitting(false);
+            // Try to extract useful error info from server response
+            const resp = err?.response?.data;
+            if (resp) {
+                // If server returns field-specific errors in an object, set them
+                if (resp.errors && typeof resp.errors === 'object') {
+                    setErrors(resp.errors);
+                    // also show top-level message if present
+                    if (resp.message) setApiError(resp.message);
+                } else if (typeof resp === 'string') {
+                    setApiError(resp);
+                } else if (resp.message) {
+                    setApiError(resp.message);
+                } else {
+                    setApiError('Error adding program.');
+                }
+            } else {
+                setApiError('Network error. Please check your connection.');
+            }
             console.error(err);
-            alert('Error adding program.');
         }
     };
 
@@ -51,6 +93,8 @@ function ProgramsAdd({ onSaveSuccess }) {
 
     return (
         <form onSubmit={handleSubmit}>
+            {apiError && <div className="alert alert-danger" role="alert">{apiError}</div>}
+
             {/* Title */}
             <div className="mb-3">
                 <label className="form-label">Title{requiredMark}</label>
@@ -139,8 +183,8 @@ function ProgramsAdd({ onSaveSuccess }) {
                 <label className="form-check-label">Is Available</label>
             </div>
 
-            <button type="submit" className="btn bg-pink text-white">
-                Add Program
+            <button type="submit" className="btn bg-pink text-white" disabled={submitting}>
+                {submitting ? 'Saving...' : 'Add Program'}
             </button>
         </form>
     );

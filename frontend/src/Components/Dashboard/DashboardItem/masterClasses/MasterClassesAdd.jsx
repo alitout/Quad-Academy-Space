@@ -23,11 +23,14 @@ function MasterClassAdd({ onSaveSuccess }) {
     const [keyTakeawayInput, setKeyTakeawayInput] = useState('');
     const [idealForInput, setIdealForInput] = useState('');
     const [errors, setErrors] = useState({});
+    const [serverError, setServerError] = useState('');
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
         setFormData({ ...formData, [name]: type === 'checkbox' ? checked : value });
         setErrors(prev => ({ ...prev, [name]: '' }));
+        setServerError('');
     };
 
     const handleAddArrayItem = (field, value, inputSetter) => {
@@ -38,6 +41,7 @@ function MasterClassAdd({ onSaveSuccess }) {
             }));
             inputSetter('');
             setErrors(prev => ({ ...prev, [field]: '' }));
+            setServerError('');
         }
     };
 
@@ -46,6 +50,7 @@ function MasterClassAdd({ onSaveSuccess }) {
             ...prev,
             [field]: prev[field].filter((_, i) => i !== idx)
         }));
+        setServerError('');
     };
 
     const validate = () => {
@@ -69,8 +74,10 @@ function MasterClassAdd({ onSaveSuccess }) {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setServerError('');
         if (!validate()) return;
 
+        setIsSubmitting(true);
         try {
             await axiosInstance.post(MASTERCLASS_ADD, {
                 ...formData,
@@ -78,13 +85,23 @@ function MasterClassAdd({ onSaveSuccess }) {
             });
             onSaveSuccess();
         } catch (err) {
-            console.error(err);
-            alert('Error adding master class.');
+            // Prefer field-level errors if backend provides them, otherwise show message
+            const resp = err.response?.data;
+            if (resp?.errors && typeof resp.errors === 'object') {
+                // Map backend field errors into local errors state
+                setErrors(prev => ({ ...prev, ...resp.errors }));
+            } else {
+                setServerError(resp?.message || err.message || 'Error adding master class.');
+            }
+        } finally {
+            setIsSubmitting(false);
         }
     };
 
     return (
         <form onSubmit={handleSubmit}>
+            {serverError && <div className="alert alert-danger">{serverError}</div>}
+
             {/* Title */}
             <div className="mb-3">
                 <label className="form-label">Title <span className="text-danger">*</span></label>
@@ -269,8 +286,8 @@ function MasterClassAdd({ onSaveSuccess }) {
                 />
             </div>
 
-            <button type="submit" className="btn bg-pink text-white">
-                Add Master Class
+            <button type="submit" className="btn bg-pink text-white" disabled={isSubmitting}>
+                {isSubmitting ? 'Saving...' : 'Add Master Class'}
             </button>
         </form>
     );

@@ -29,12 +29,21 @@ function ProgramEdit({ program, onSaveSuccess }) {
                 image: program.image,
                 isAvailable: program.isAvailable,
             });
+            setErrors({});
         }
     }, [program]);
 
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
-        setFormData({ ...formData, [name]: type === 'checkbox' ? checked : value });
+        setFormData(prev => ({ ...prev, [name]: type === 'checkbox' ? checked : value }));
+
+        // clear field-specific and submit errors when user edits
+        setErrors(prev => {
+            const next = { ...prev };
+            delete next[name];
+            delete next.submit;
+            return next;
+        });
     };
 
     const validateForm = () => {
@@ -63,7 +72,20 @@ function ProgramEdit({ program, onSaveSuccess }) {
             onSaveSuccess();
         } catch (err) {
             console.error(err);
-            alert('Error updating program.');
+
+            // Prefer server-side validation errors if provided
+            if (err.response && err.response.data) {
+                const data = err.response.data;
+                // If server returns a map of field errors, merge them
+                if (typeof data === 'object' && !Array.isArray(data)) {
+                    // Normalize keys if server nests errors (adjust as needed)
+                    setErrors(prev => ({ ...prev, ...data }));
+                } else {
+                    setErrors(prev => ({ ...prev, submit: String(data) }));
+                }
+            } else {
+                setErrors(prev => ({ ...prev, submit: 'Error updating program. Please try again.' }));
+            }
         }
     };
 
@@ -71,6 +93,8 @@ function ProgramEdit({ program, onSaveSuccess }) {
 
     return (
         <form onSubmit={handleSubmit}>
+            {errors.submit && <div className="alert alert-danger">{errors.submit}</div>}
+
             <div className="mb-3">
                 <label className="form-label">Program ID</label>
                 <input type="text" className="form-control" value={formData.programID} readOnly />
@@ -158,7 +182,15 @@ function ProgramEdit({ program, onSaveSuccess }) {
                     type="checkbox"
                     label="Is Available"
                     checked={formData.isAvailable}
-                    onChange={(e) => setFormData({ ...formData, isAvailable: e.target.checked })}
+                    onChange={(e) => {
+                        setFormData({ ...formData, isAvailable: e.target.checked });
+                        setErrors(prev => {
+                            const next = { ...prev };
+                            delete next.isAvailable;
+                            delete next.submit;
+                            return next;
+                        });
+                    }}
                 />
             </div>
 

@@ -24,6 +24,7 @@ function MasterClassEdit({ masterClass, onSaveSuccess }) {
     const [keyTakeawayInput, setKeyTakeawayInput] = useState('');
     const [idealForInput, setIdealForInput] = useState('');
     const [errors, setErrors] = useState({});
+    const [serverError, setServerError] = useState('');
 
     useEffect(() => {
         if (masterClass) {
@@ -41,6 +42,8 @@ function MasterClassEdit({ masterClass, onSaveSuccess }) {
                 level: masterClass.level || '',
                 idealFor: Array.isArray(masterClass.idealFor) ? masterClass.idealFor : [],
             });
+            setErrors({});
+            setServerError('');
         }
     }, [masterClass]);
 
@@ -48,6 +51,7 @@ function MasterClassEdit({ masterClass, onSaveSuccess }) {
         const { name, value, type, checked } = e.target;
         setFormData({ ...formData, [name]: type === 'checkbox' ? checked : value });
         setErrors((prev) => ({ ...prev, [name]: '' }));
+        setServerError('');
     };
 
     const handleAddArrayItem = (field, value, inputSetter) => {
@@ -58,6 +62,7 @@ function MasterClassEdit({ masterClass, onSaveSuccess }) {
             }));
             inputSetter('');
             setErrors(prev => ({ ...prev, [field]: '' }));
+            setServerError('');
         }
     };
 
@@ -66,6 +71,7 @@ function MasterClassEdit({ masterClass, onSaveSuccess }) {
             ...prev,
             [field]: prev[field].filter((_, i) => i !== idx)
         }));
+        setServerError('');
     };
 
     const validate = () => {
@@ -90,6 +96,7 @@ function MasterClassEdit({ masterClass, onSaveSuccess }) {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setServerError('');
         if (!validate()) return;
 
         try {
@@ -100,12 +107,24 @@ function MasterClassEdit({ masterClass, onSaveSuccess }) {
             onSaveSuccess();
         } catch (err) {
             console.error(err);
-            alert('Error updating master class.');
+            // Prefer structured server validation errors if provided, otherwise show a generic message
+            const resp = err?.response?.data;
+            if (resp) {
+                // Example: { message: '...', errors: { fieldName: 'error' } }
+                if (resp.errors && typeof resp.errors === 'object') {
+                    setErrors(prev => ({ ...prev, ...resp.errors }));
+                }
+                setServerError(resp.message || 'Failed to update master class. Please review the errors.');
+            } else {
+                setServerError(err.message || 'Network error. Please try again.');
+            }
         }
     };
 
     return (
         <form onSubmit={handleSubmit}>
+            {serverError && <div className="alert alert-danger">{serverError}</div>}
+
             {/* ID */}
             <div className="mb-3">
                 <label className="form-label">Master Class ID</label>
