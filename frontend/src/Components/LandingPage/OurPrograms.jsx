@@ -1,16 +1,13 @@
 import React, { useState } from 'react'
-import programsData from '../../data/jsons/programs.json';
-import { Button, Modal, Card, Image } from 'react-bootstrap';
+import { Button, Modal, Card, Image } from 'react-bootstrap'
+import axios from 'axios'
+import { PROGRAM_GET_ALL } from '../../externalApi/ExternalUrls'
 
-import axios from 'axios';
-import { PROGRAM_GET_ALL } from '../../externalApi/ExternalUrls';
-
-import mediaProduction from '../../data/images/programs/media-production.jpg';
-import marketingCommunications from '../../data/images/programs/marketing-communications.jpg';
-import graphicDesign from '../../data/images/programs/graphic-design.jpg';
-import digitalPhotography from '../../data/images/programs/digital-photography.jpg';
-import webDevelopment from '../../data/images/programs/web-development.jpg';
-
+import mediaProduction from '../../data/images/programs/media-production.jpg'
+import marketingCommunications from '../../data/images/programs/marketing-communications.jpg'
+import graphicDesign from '../../data/images/programs/graphic-design.jpg'
+import digitalPhotography from '../../data/images/programs/digital-photography.jpg'
+import webDevelopment from '../../data/images/programs/web-development.jpg'
 
 const ImageMap = {
     "media-production": mediaProduction,
@@ -20,27 +17,49 @@ const ImageMap = {
     "web-developement": webDevelopment,
 }
 
-const ProgramCard = ({ title, brief, full_description, image, date, cost }) => {
-    const [showPopup, setShowPopup] = useState(false);
+const ProgramCard = ({ title, brief, full_description, image, date, cost, userRole }) => {
+    const [showModal, setShowModal] = useState(false)
+
+    const roleFromStorage = (() => {
+        try {
+            const user = JSON.parse(localStorage.getItem("user"))
+            return user?.role || localStorage.getItem("role") || ""
+        } catch {
+            return localStorage.getItem("role") || ""
+        }
+    })()
+    const role = userRole || roleFromStorage || ""
 
     // Format date to readable string
     const formattedDate = date
         ? (() => {
-            const d = new Date(date);
-            const day = String(d.getDate()).padStart(2, '0');
-            const month = String(d.getMonth() + 1).padStart(2, '0');
-            const year = d.getFullYear();
-            return `${day}-${month}-${year}`;
+            const d = new Date(date)
+            const day = String(d.getDate()).padStart(2, '0')
+            const month = String(d.getMonth() + 1).padStart(2, '0')
+            const year = d.getFullYear()
+            return `${day}-${month}-${year}`
         })()
-        : "";
+        : ""
 
-    const handleShow = () => setShowPopup(true);
-    const handleClose = () => setShowPopup(false);
+    const handleShowModal = () => setShowModal(true)
+    const handleCloseModal = () => setShowModal(false)
+
+    const handleEnroll = (program) => {
+        if (!program) {
+            alert("Program data not found. Please try again.")
+            return
+        }
+        console.log("Enroll clicked for", program)
+        alert(`Enrollment requested for "${program.title}". Replace handleEnroll with real API call.`)
+    }
+
+    // Single object for program data
+    const currentProgram = { title, brief, full_description, image, date, cost }
 
     return (
         <>
             <Card
-                onClick={handleShow}
+                onClick={handleShowModal}
                 className="mb-4 program-card"
                 style={{ width: "21rem", position: "relative" }}
             >
@@ -55,6 +74,22 @@ const ProgramCard = ({ title, brief, full_description, image, date, cost }) => {
                         <strong>Cost:</strong> ${cost}
                     </p>
                 </Card.Body>
+
+                {role === "user" && (
+                    <Card.Footer style={{ position: 'relative', zIndex: 2, background: '#fff', borderTop: '1px solid rgba(0,0,0,.125)' }}>
+                        <div className="d-flex justify-content-center w-100">
+                            <Button
+                                className="btn bg-pink border-0 pt-1 flex-grow-1"
+                                onClick={(e) => {
+                                    e.stopPropagation()
+                                    handleEnroll(currentProgram)
+                                }}
+                            >
+                                Enroll
+                            </Button>
+                        </div>
+                    </Card.Footer>
+                )}
 
                 {/* Hover Button */}
                 <div
@@ -72,14 +107,21 @@ const ProgramCard = ({ title, brief, full_description, image, date, cost }) => {
                     onMouseEnter={(e) => (e.currentTarget.style.opacity = 1)}
                     onMouseLeave={(e) => (e.currentTarget.style.opacity = 0)}
                 >
-                    <Button variant="primary" onClick={handleShow}>
+                    <Button
+                        variant="primary"
+                        className="border-0"
+                        onClick={(e) => {
+                            e.stopPropagation()
+                            handleShowModal()
+                        }}
+                    >
                         View Details
                     </Button>
                 </div>
             </Card>
 
             {/* Modal for Details */}
-            <Modal show={showPopup} onHide={handleClose} centered>
+            <Modal show={showModal} onHide={handleCloseModal} centered>
                 <Modal.Header closeButton>
                     <Modal.Title>{title}</Modal.Title>
                 </Modal.Header>
@@ -95,40 +137,44 @@ const ProgramCard = ({ title, brief, full_description, image, date, cost }) => {
                     <p><strong>Date:</strong> {formattedDate}</p>
                     <p><strong>Cost:</strong> ${cost}</p>
                 </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={handleClose}>
+                <Modal.Footer className="d-flex flex-row justify-content-end">
+                    {role === "user" && (
+                        <Button
+                            className="btn bg-pink border-0 pt-1"
+                            onClick={() => handleEnroll(currentProgram)}
+                        >
+                            Enroll
+                        </Button>
+                    )}
+                    <Button variant="secondary" onClick={handleCloseModal}>
                         Close
                     </Button>
                 </Modal.Footer>
             </Modal>
         </>
-    );
-};
+    )
+}
 
 function OurPrograms() {
+    const [programs, setPrograms] = useState([])
 
-    const [programs, setPrograms] = useState([]);
     React.useEffect(() => {
         const fetchPrograms = async () => {
             try {
-                const response = await axios.get(PROGRAM_GET_ALL);
-                setPrograms(response.data);
+                const response = await axios.get(PROGRAM_GET_ALL)
+                setPrograms(response.data)
             } catch (error) {
-                console.error('Error fetching programs:', error);
+                console.error('Error fetching programs:', error)
             }
-        };
-        fetchPrograms();
-    }, []);
+        }
+        fetchPrograms()
+    }, [])
 
     return (
-        <div
-            id='programs'
-            className="ourPrograms bg-gray-100 py-4 py-md-5">
+        <div id='programs' className="ourPrograms bg-gray-100 py-4 py-md-5">
             <div className='container my-3'>
                 <div className="d-flex flex-column align-items-center">
-                    <h2 className="title">
-                        Our Programs
-                    </h2>
+                    <h2 className="title">Our Programs</h2>
                     <p className="subTitle">
                         Lorem ipsum dolor sit, amet consectetur adipisicing.
                     </p>
@@ -140,9 +186,7 @@ function OurPrograms() {
                         .filter(program => program.isAvailable)
                         .map((program) => (
                             <div className="col-md-4 d-flex justify-content-center" key={program.id}>
-                                <ProgramCard
-                                    {...program}
-                                />
+                                <ProgramCard {...program} />
                             </div>
                         ))}
                 </div>
@@ -151,4 +195,4 @@ function OurPrograms() {
     )
 }
 
-export default OurPrograms;
+export default OurPrograms

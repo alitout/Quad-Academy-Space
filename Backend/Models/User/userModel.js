@@ -28,21 +28,30 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    role: {
+        type: String,
+        enum: ['user', 'admin'],
+        default: 'user'
+    }
 });
 
 UserSchema.pre('save', async function (next) {
     if (this.isNew && !this.userID) {
-        const lastUser = await mongoose.model('User').findOne({}, {}, { sort: { userID: -1 } });
-        let nextID = 1;
-        if (lastUser && lastUser.userID) {
-            const match = lastUser.userID.match(/^USER(\d+)$/);
-            if (match) {
-                nextID = parseInt(match[1], 10) + 1;
-            }
+        const prefix = 'USER';
+        // find all userIDs with the same prefix and extract numeric parts to determine the next number
+        const users = await mongoose.model('User').find({ userID: { $regex: `^${prefix}\\d+$` } }).select('userID').lean();
+        let maxNum = 0;
+        const re = new RegExp(`^${prefix}(\\d+)$`);
+        for (const u of users) {
+        const m = u.userID.match(re);
+        if (m) {
+            const n = parseInt(m[1], 10);
+            if (!Number.isNaN(n) && n > maxNum) maxNum = n;
         }
-        this.userID = `USER${nextID.toString().padStart(2, '0')}`;
+        }
+        const nextID = maxNum + 1;
+        this.userID = `${prefix}${nextID.toString().padStart(2, '0')}`;
     }
-    next();
 });
 
 const User = mongoose.model('User', UserSchema);

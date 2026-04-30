@@ -5,6 +5,7 @@ import { VERIFY_TOKEN } from '../externalApi/ExternalUrls';
 import Loading from '../Components/loading';
 import NavigationsMenu from '../Components/Dashboard/NavigationsMenu';
 import Logo from '../Components/Logo/Logo';
+import { useAuth } from '../Context/AuthContext';
 
 // untitled ui icons
 import Menu01 from '@untitled-ui/icons-react/build/cjs/Menu01';
@@ -15,8 +16,9 @@ function DashboardPage() {
     const navigate = useNavigate();
 
     // State Variables
-    const [bearerToken, setBearerToken] = useState(localStorage.getItem('bearerToken') || null);
+    const auth = useAuth();
     const [loading, setLoading] = useState(true);
+    const bearerToken = auth.bearerToken;
     const [isMenuOpen, setIsMenuOpen] = useState(true);
 
     useEffect(() => {
@@ -24,6 +26,8 @@ function DashboardPage() {
             // No token → go to sign-in page
             if (!bearerToken) {
                 navigate('/sign-in');
+                setLoading(false);
+                return;
             }
 
             try {
@@ -34,8 +38,7 @@ function DashboardPage() {
                 );
 
                 if (!res.data.valid) {
-                    localStorage.removeItem('bearerToken');
-                    setBearerToken(null);
+                    auth.logout();
                     navigate('/sign-in');
                     return;
                 }
@@ -43,8 +46,7 @@ function DashboardPage() {
                 setLoading(false);
             } catch (err) {
                 if (err.response && (err.response.status === 401 || err.response.status === 403)) {
-                    localStorage.removeItem('bearerToken');
-                    setBearerToken(null);
+                    auth.logout();
                     navigate('/sign-in');
                     return;
                 }

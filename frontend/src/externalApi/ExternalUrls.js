@@ -6,8 +6,11 @@ export const HEADER = {
 }
 
 // User API Endpoints
-// Register User
-export const USER_REGISTER = `${BASE_URL}/user/add`;
+// Add Admin User
+export const USER_ADD_ADMIN = `${BASE_URL}/user/addAdmin`;
+
+// Add User
+export const USER_ADD = `${BASE_URL}/user/add`;
 
 // Login User
 export const USER_LOGIN = `${BASE_URL}/user/login`;
@@ -15,14 +18,23 @@ export const USER_LOGIN = `${BASE_URL}/user/login`;
 // Get Self
 export const USER_GETSELF = `${BASE_URL}/user/getSelf`;
 
+// Get All
+export const USER_GET_ALL = `${BASE_URL}/user/getAll`;
+
 // Update User
 export const USER_UPDATE_BY_ID = (userID) => `${BASE_URL}/user/update/${userID}`;
 
 // Change User Password
 export const USER_CHANGE_PASSWORD = (userID) => `${BASE_URL}/user/changePassword/${userID}`;
 
+// Reset User Password
+export const USER_RESET_PASSWORD = (userID) => `${BASE_URL}/user/resetPassword/${userID}`;
+
 // Delete User
-export const USER_DELETE_BY_ID = (userID) => `${BASE_URL}/user/delete/${userID}`;
+export const USER_DELETE_SELF_BY_ID = (userID) => `${BASE_URL}/user/delete/Self/${userID}`;
+
+// Delete User by Admin
+export const USER_DELETE_BY_ADMIN = (userID) => `${BASE_URL}/user/delete/ByAdmin/${userID}`;
 
 // Verify Token
 export const VERIFY_TOKEN = `${BASE_URL}/auth/verifyToken`;

@@ -16,11 +16,21 @@ const ImageMap = {
     "ai-in-content-creation": AIinContentCreation,
 };
 
-const MasterClasses = () => {
+const MasterClasses = ({ userRole }) => {
     const [masterclasses, setMasterclasses] = useState([]);
     const [showModal, setShowModal] = useState(false);
     const [selectedClass, setSelectedClass] = useState(null);
     const [currentIndex, setCurrentIndex] = useState(0);
+
+    const roleFromStorage = (() => {
+        try {
+            const user = JSON.parse(localStorage.getItem("user"));
+            return user?.role || localStorage.getItem("role") || "";
+        } catch {
+            return localStorage.getItem("role") || "";
+        }
+    })();
+    const role = userRole || roleFromStorage || "";
 
     // Format date to readable string
     const formatDate = (date) => {
@@ -31,7 +41,6 @@ const MasterClasses = () => {
         const year = d.getFullYear();
         return `${day}-${month}-${year}`;
     };
-
 
     useEffect(() => {
         axios.get(MASTERCLASS_GET_ALL)
@@ -53,6 +62,16 @@ const MasterClasses = () => {
 
     const handleSelect = (selectedIndex) => {
         setCurrentIndex(selectedIndex);
+    };
+
+    const handleEnroll = (masterclass) => {
+        // Placeholder enroll handler. Replace with actual API call or navigation.
+        console.log("Enroll clicked for", masterclass);
+        // Example:
+        // axios.post('/api/enroll', { masterclassId: masterclass.id })
+        //   .then(() => { /* success */ })
+        //   .catch(err => console.error(err));
+        alert(`Enrollment requested for "${masterclass.title}". Replace handleEnroll with real API call.`);
     };
 
     return (
@@ -81,18 +100,27 @@ const MasterClasses = () => {
                         .map((masterclass, idx) => (
                             <Carousel.Item key={idx}>
                                 <div style={{ display: "flex", justifyContent: "center" }}>
-                                    <Card key={masterclass.id} style={{ width: "36rem", height: "23rem" }}>
-                                        <Card.Img variant="top" src={ImageMap[masterclass.image]} alt={masterclass.image} />
-                                        <Card.Body className="d-flex flex-column justify-content-between">
-                                            <div>
-                                                <Card.Title>{masterclass.title}</Card.Title>
-                                                <Card.Text>{masterclass.brief}</Card.Text>
-                                            </div>
-                                            <Button className="btn bg-pink border-0 pt-1" onClick={() => handleShowModal(masterclass)}>
-                                                Learn More
-                                            </Button>
-                                        </Card.Body>
-                                    </Card>
+                                    <div>
+                                        <Card key={masterclass.id} style={{ width: "36rem", height: "23rem" }}>
+                                            <Card.Img variant="top" src={ImageMap[masterclass.image]} alt={masterclass.image} />
+                                            <Card.Body className="d-flex flex-column justify-content-between">
+                                                <div>
+                                                    <Card.Title>{masterclass.title}</Card.Title>
+                                                    <Card.Text>{masterclass.brief}</Card.Text>
+                                                </div>
+                                                <div className="d-flex flex-row justify-content-between align-items-center gap-2">
+                                                    {role === "user" && (
+                                                        <Button className="btn bg-pink border-0 pt-1 flex-grow-1" onClick={() => handleEnroll(masterclass)}>
+                                                            Enroll
+                                                        </Button>
+                                                    )}
+                                                    <Button className="btn bg-pink border-0 pt-1 flex-grow-1" onClick={() => handleShowModal(masterclass)}>
+                                                        Learn More
+                                                    </Button>
+                                                </div>
+                                            </Card.Body>
+                                        </Card>
+                                    </div>
                                 </div>
                             </Carousel.Item>
                         ))}
@@ -130,16 +158,23 @@ const MasterClasses = () => {
                                 <p><strong>Date:</strong> {formatDate(selectedClass.date)}</p>
                                 <p><strong>Cost:</strong> ${selectedClass.cost}</p>
                             </Modal.Body>
-                            <Modal.Footer>
+                            <Modal.Footer className="d-flex flex-row justify-content-end">
+                                {role === "user" && (
+                                    <Button className="btn bg-pink border-0 pt-1" onClick={() => handleEnroll(selectedClass)}>
+                                        Enroll
+                                    </Button>
+                                )}
+
                                 <Button variant="secondary" onClick={handleCloseModal}>
                                     Close
                                 </Button>
+
                             </Modal.Footer>
                         </>
                     )}
                 </Modal>
             </div>
-        </div>
+        </div >
     );
 };
 

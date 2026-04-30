@@ -11,6 +11,7 @@ export const routeMap = {
     'Programs': 'programs',
     'Master Classes': 'masterclasses',
     'Profile': 'profile',
+    'Users': 'users'
 };
 
 const Routes = () => {

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { useAuth } from '../../Context/AuthContext';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { routeMap } from '../../Routes/Routes';
 import axiosInstance from '../../API/axiosInstance';
@@ -8,15 +9,13 @@ import { USER_GETSELF } from '../../externalApi/ExternalUrls';
 import GraduationHat02 from '@untitled-ui/icons-react/build/cjs/GraduationHat02';
 import Lightbulb04 from '@untitled-ui/icons-react/build/cjs/Lightbulb04';
 import XClose from '@untitled-ui/icons-react/build/cjs/XClose';
+import CodeBrowser from '@untitled-ui/icons-react/build/cjs/CodeBrowser';
 import ImageUser from '@untitled-ui/icons-react/build/cjs/ImageUser';
 import LogOut01 from '@untitled-ui/icons-react/build/cjs/LogOut01';
-
-const menuStructure = {
-    "Programs": ["programs"],
-    "Master Classes": ["masterclasses"],
-}
+import Users01 from '@untitled-ui/icons-react/build/cjs/Users01'
 
 const pageCodeIcons = {
+    "Users": Users01,
     "Programs": GraduationHat02,
     "Master Classes": Lightbulb04,
 }
@@ -25,8 +24,15 @@ function NavigationsMenu({ toggleMenu }) {
     const navigate = useNavigate();
     const location = useLocation();
 
-    const bearerToken = localStorage.getItem('bearerToken');
-    const auth = `Bearer ${bearerToken}`;
+    const auth = useAuth();
+    const bearerToken = auth.bearerToken;
+    const isAdmin = auth.user?.role === 'admin';
+
+    const menuStructure = {
+        ...(isAdmin ? { "Users": ["users"] } : {}),
+        "Programs": ["programs"],
+        "Master Classes": ["masterclasses"],
+    };
 
     // State Variables
     const [activeItem, setActiveItem] = useState('Profile');
@@ -39,8 +45,7 @@ function NavigationsMenu({ toggleMenu }) {
         setRoute(newRoute);
 
         if (item === 'Logout') {
-            localStorage.clear();
-            navigate('/sign-in');
+            auth.logout();
             return;
         }
 
@@ -57,12 +62,17 @@ function NavigationsMenu({ toggleMenu }) {
                     return;
                 }
 
-                const res = await axiosInstance.get(USER_GETSELF);
+                // prefer auth.user if available
+                if (auth.user && auth.user.username) {
+                    setName(auth.user.username);
+                    return;
+                }
 
+                const res = await axiosInstance.get(USER_GETSELF);
                 setName(res.data.username);
             } catch (error) {
                 console.error("Error fetching user data:", error);
-                localStorage.clear();
+                auth.logout();
                 navigate('/sign-in');
             }
         };
@@ -135,6 +145,16 @@ function NavigationsMenu({ toggleMenu }) {
                             {React.createElement(ImageUser, { width: '1.5rem', height: '1.5rem' })}
                         </div>
                         Profile
+                    </div>
+                    <div
+                        className={`fs-5 fw-500 d-flex justify-content-start align-items-center py-1 m-2 ${activeItem === 'LandingPage' ? 'activePage' : ''}`}
+                        style={{ cursor: 'pointer' }}
+                        onClick={() => navigate('/')}
+                    >
+                        <div className='uiIcon ps-2 me-2'>
+                            {React.createElement(CodeBrowser, { width: '1.5rem', height: '1.5rem' })}
+                        </div>
+                        Landing Page
                     </div>
                     <div
                         className={`fs-5 fw-500 d-flex justify-content-start align-items-center py-1 m-2 ${activeItem === 'Logout' ? 'activePage' : ''}`}

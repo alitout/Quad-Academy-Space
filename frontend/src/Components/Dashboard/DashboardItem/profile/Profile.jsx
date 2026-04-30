@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axiosInstance from "../../../../API/axiosInstance";
 import { useNavigate } from "react-router-dom";
 import { Button, Form, Card, Modal } from "react-bootstrap";
-import { USER_CHANGE_PASSWORD, USER_DELETE_BY_ID, USER_GETSELF, USER_UPDATE_BY_ID } from "../../../../externalApi/ExternalUrls";
+import { USER_CHANGE_PASSWORD, USER_DELETE_SELF_BY_ID, USER_GETSELF, USER_UPDATE_BY_ID } from "../../../../externalApi/ExternalUrls";
 
 function Profile() {
     const navigate = useNavigate();
@@ -12,7 +12,9 @@ function Profile() {
 
     // User data states
     const [user, setUser] = useState(null);
+    const [originalUser, setOriginalUser] = useState({});
     const [editMode, setEditMode] = useState(false);
+    const isAdmin = user?.role === "admin";
 
     // Password modal
     const [showPasswordModal, setShowPasswordModal] = useState(false);
@@ -94,11 +96,18 @@ function Profile() {
 
         setUpdating(true);
 
+
         try {
-            await axiosInstance.patch(USER_UPDATE_BY_ID(user.userID), {
-                newEmail: trimmedEmail,
-                newFullName: user.fullName.trim()
-            });
+            const payload = {
+                email: trimmedEmail,
+                fullName: user.fullName.trim(),
+            };
+
+            if (isAdmin) {
+                payload.role = user.role;
+            }
+
+            await axiosInstance.patch(USER_UPDATE_BY_ID(user.userID), payload);
             setEditSuccess("Profile updated successfully.");
             setEditMode(false);
         } catch (err) {
@@ -203,7 +212,7 @@ function Profile() {
         setDeleting(true);
 
         try {
-            await axiosInstance.post(USER_DELETE_BY_ID(user.userID), {
+            await axiosInstance.post(USER_DELETE_SELF_BY_ID(user.userID), {
                 password: passwordInput
             });
 
@@ -269,45 +278,82 @@ function Profile() {
                         {fieldErrors.fullName && <div className="invalid-feedback d-block">{fieldErrors.fullName}</div>}
                     </Form.Group>
 
-                    {editMode ? (
-                        <Button type="submit" variant="success" className="me-2" disabled={updating}>
-                            {updating ? "Saving..." : "Save Changes"}
-                        </Button>
-                    ) : (
-                        <button
-                            type="button"
-                            className="functionButton me-2 btn text-pink border-pink"
+                    <Form.Group className="mb-3">
+                        <Form.Label>Role</Form.Label>
+                        <Form.Select
+                            value={user.role || "user"}
+                            onChange={(e) => handleOnChange("role", e.target.value)}
+                            disabled={!isAdmin || !editMode}
+                        >
+                            <option value="admin">Admin</option>
+                            <option value="user">User</option>
+                        </Form.Select>
+
+                        {!isAdmin && (
+                            <div className="form-text text-muted">
+                                Only admins can change roles.
+                            </div>
+                        )}
+                    </Form.Group>
+
+                    <div className="d-flex flex-wrap gap-2">
+                        {editMode ? (
+                            <>
+                                <Button className="border-0" type="submit" variant="success" disabled={updating}>
+                                    {updating ? "Saving..." : "Save Changes"}
+                                </Button>
+                                <Button
+                                    className="border-0"
+                                    variant="secondary"
+                                    onClick={() => {
+                                        setEditMode(false);
+                                        setUser(originalUser); // restore instantly
+
+                                        setFieldErrors({ email: "", fullName: "" });
+                                        setEditError("");
+                                        setEditSuccess("");
+                                    }}
+                                >
+                                    Cancel
+                                </Button>
+                            </>
+                        ) : (
+                            <button
+                                type="button"
+                                className="functionButton btn text-pink border-pink"
+                                onClick={() => {
+                                    setOriginalUser(user); // store original
+                                    setEditMode(true);
+                                    setEditError("");
+                                    setEditSuccess("");
+                                    setFieldErrors({ email: "", fullName: "" });
+                                }}
+                            >
+                                Edit Profile
+                            </button>
+                        )}
+
+                        <Button
+                            className="btn bg-cyan-blue border-0"
                             onClick={() => {
-                                setEditMode(true);
-                                setEditError("");
-                                setEditSuccess("");
-                                setFieldErrors({ email: "", fullName: "" });
+                                // reset password form and messages when opening
+                                setPasswordData({ oldPassword: "", newPassword: "", confirmNewPassword: "" });
+                                setPasswordError("");
+                                setPasswordSuccess("");
+                                setPasswordFieldErrors({ oldPassword: "", newPassword: "", confirmNewPassword: "" });
+                                setShowPasswordModal(true);
                             }}
                         >
-                            Edit Profile
-                        </button>
-                    )}
+                            Change Password
+                        </Button>
 
-                    <Button
-                        className="btn bg-cyan-blue border-0 ms-2"
-                        onClick={() => {
-                            // reset password form and messages when opening
-                            setPasswordData({ oldPassword: "", newPassword: "", confirmNewPassword: "" });
-                            setPasswordError("");
-                            setPasswordSuccess("");
-                            setPasswordFieldErrors({ oldPassword: "", newPassword: "", confirmNewPassword: "" });
-                            setShowPasswordModal(true);
-                        }}
-                    >
-                        Change Password
-                    </Button>
-
-                    <Button
-                        className="functionButton bg-pink border-0 ms-2"
-                        onClick={openDeleteModal}
-                    >
-                        Delete Profile
-                    </Button>
+                        <Button
+                            className="functionButton bg-pink border-0"
+                            onClick={openDeleteModal}
+                        >
+                            Delete Profile
+                        </Button>
+                    </div>
                 </Form>
             </Card>
 
@@ -436,7 +482,7 @@ function Profile() {
                     </div>
                 </Modal.Body>
             </Modal>
-        </div>
+        </div >
     );
 }
 
