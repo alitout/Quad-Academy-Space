@@ -4,19 +4,22 @@ import Headroom from 'react-headroom';
 import Logo from '../Logo/Logo';
 import axios from 'axios';
 import { VERIFY_TOKEN } from '../../externalApi/ExternalUrls';
+import { useAuth } from '../../Context/AuthContext';
 import Loading from '../loading';
 
 const ResponsiveNavbar = () => {
     const [show, setShow] = useState(false);
     const [isSignedIn, setIsSignedIn] = useState(false);
-    const [bearerToken, setBearerToken] = useState(localStorage.getItem('bearerToken'));
     const [loading, setLoading] = useState(true);
+    const auth = useAuth();
+    const bearerToken = auth.bearerToken;
 
     useEffect(() => {
         const verifyToken = async () => {
             // No token → isSignedIn = false
             if (!bearerToken) {
                 setIsSignedIn(false);
+                setLoading(false);
                 return;
             }
 
@@ -27,20 +30,18 @@ const ResponsiveNavbar = () => {
                     { headers: { 'Content-Type': 'application/json' } }
                 );
 
-
                 const data = res.data;
 
                 if (data.valid) {
-                    // Valid token → isSignedIn = true
                     setIsSignedIn(true);
                 } else {
-                    // Invalid/expired token → isSignedIn = false + clear token
-                    localStorage.removeItem('bearerToken');
+                    // invalid token -> use auth.logout to clear everything
+                    auth.logout();
                     setIsSignedIn(false);
                 }
             } catch (err) {
                 console.error('Error verifying token:', err);
-                localStorage.removeItem('bearerToken');
+                auth.logout();
             } finally {
                 setLoading(false);
             }

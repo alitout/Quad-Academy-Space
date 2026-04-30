@@ -1,12 +1,15 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { useAuth } from '../../Context/AuthContext';
 import Logo from '../Logo/Logo';
 import { USER_LOGIN } from '../../externalApi/ExternalUrls';
-import { FaEye, FaEyeSlash } from "react-icons/fa";
+import Eye from '@untitled-ui/icons-react/build/cjs/Eye'
+import EyeOff from '@untitled-ui/icons-react/build/cjs/EyeOff'
 
 function LoginForm({ onLoginSuccess }) {
     const navigate = useNavigate();
+    const auth = useAuth();
 
     const [identifier, setIdentifier] = useState('');
     const [password, setPassword] = useState('');
@@ -52,7 +55,11 @@ function LoginForm({ onLoginSuccess }) {
         try {
             const res = await axios.post(USER_LOGIN, loginRequest);
             if (res.data && res.data.bearerToken && res.data.refreshToken) {
-                onLoginSuccess(res.data.bearerToken, res.data.refreshToken);
+                // store globally using AuthContext
+                const userData = res.data.data || null;
+                auth.login({ user: userData, accessToken: res.data.bearerToken, refreshToken: res.data.refreshToken });
+                // navigate to dashboard
+                navigate('/dashboard/profile');
             } else {
                 setFailedToLogin('Failed to login. Please check your credentials.');
             }
@@ -108,7 +115,7 @@ function LoginForm({ onLoginSuccess }) {
                                     style={{ cursor: 'pointer' }}
                                     onClick={() => setShowPassword(!showPassword)}
                                 >
-                                    {showPassword ? <FaEyeSlash /> : <FaEye />}
+                                    {showPassword ? <EyeOff /> : <Eye />}
                                 </span>
                                 {isPasswordEmpty && <div className="invalid-feedback d-block">Password can't be empty</div>}
                             </div>

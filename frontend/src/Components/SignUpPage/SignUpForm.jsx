@@ -2,8 +2,9 @@ import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Logo from '../../Components/Logo/Logo';
-import { USER_REGISTER } from '../../externalApi/ExternalUrls';
-import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { USER_ADD } from '../../externalApi/ExternalUrls';
+import Eye from '@untitled-ui/icons-react/build/cjs/Eye'
+import EyeOff from '@untitled-ui/icons-react/build/cjs/EyeOff'
 
 function SignUpPage() {
     const navigate = useNavigate();
@@ -57,7 +58,7 @@ function SignUpPage() {
         };
 
         try {
-            await axios.post(USER_REGISTER, registerRequest);
+            await axios.post(USER_ADD, registerRequest);
             setSuccessMessage("Registration successful! You can now log in.");
             setErrors({});
             // keep same behavior as original: navigate to profile after success
@@ -133,7 +134,7 @@ function SignUpPage() {
                                     style={{ cursor: 'pointer' }}
                                     onClick={() => setShowPassword(!showPassword)}
                                 >
-                                    {showPassword ? <FaEyeSlash /> : <FaEye />}
+                                    {showPassword ? <EyeOff /> : <Eye />}
                                 </span>
                                 {errors.password && <div className="invalid-feedback d-block">{errors.password}</div>}
                             </div>
@@ -154,7 +155,7 @@ function SignUpPage() {
                                     style={{ cursor: 'pointer' }}
                                     onClick={() => setShowPassword(!showPassword)}
                                 >
-                                    {showPassword ? <FaEyeSlash /> : <FaEye />}
+                                    {showPassword ? <EyeOff /> : <Eye />}
                                 </span>
                                 {errors.confirmPassword && <div className="invalid-feedback d-block">{errors.confirmPassword}</div>}
                             </div>
