@@ -9,6 +9,9 @@ import ProgramDeleteConfirm from './ProgramDeleteConfirm';
 
 import { PROGRAM_GET_ALL, PROGRAM_DELETE_BY_ID } from '../../../../externalApi/ExternalUrls';
 
+import Edit03 from '@untitled-ui/icons-react/build/cjs/Edit03';
+import Trash03 from '@untitled-ui/icons-react/build/cjs/Trash03';
+
 function Programs() {
     const [programs, setPrograms] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -76,43 +79,47 @@ function Programs() {
             {loading ? (
                 <div>Loading...</div>
             ) : (
-                <table className='table'>
-                    <thead>
-                        <tr>
-                            <th className='bg-cyan-blue text-white border p-2'>ID</th>
-                            <th className='bg-cyan-blue text-white border p-2'>Title</th>
-                            <th className='bg-cyan-blue text-white border p-2'>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {programs.map(program => {
-                            const disabledRow = !program.isAvailable;
-                            const rowStyle = disabledRow
-                                ? 'bg-light text-muted border p-2'
-                                : '';
-                            return (
-                                <tr key={program.programID}>
-                                    <td className={`border p-2 ${rowStyle}`}>{program.programID}</td>
-                                    <td className={`border p-2 ${rowStyle}`}>{program.title}</td>
-                                    <td className={`border p-2 ${rowStyle}`}>
-                                        <button
-                                            className='functionButton me-2 btn text-pink border-pink'
-                                            onClick={() => handleEdit(program)}
-                                        >
-                                            Edit
-                                        </button>
-                                        <button
-                                            className='functionButton btn bg-pink'
-                                            onClick={() => handleDelete(program)}
-                                        >
-                                            Delete
-                                        </button>
-                                    </td>
-                                </tr>
-                            );
-                        })}
-                    </tbody>
-                </table>
+                <div className="table-responsive">
+                    <table className='table'>
+                        <thead>
+                            <tr>
+                                <th className='bg-cyan-blue text-white border p-2'>ID</th>
+                                <th className='bg-cyan-blue text-white border p-2'>Title</th>
+                                <th className='bg-cyan-blue text-white border p-2'>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {programs.map(program => {
+                                const disabledRow = !program.isAvailable;
+                                const rowStyle = disabledRow
+                                    ? 'bg-light text-muted border p-2'
+                                    : '';
+                                return (
+                                    <tr key={program.programID}>
+                                        <td className={`border p-2 ${rowStyle}`}>{program.programID}</td>
+                                        <td className={`border p-2 ${rowStyle}`}>{program.title}</td>
+                                        <td className={`border p-2 ${rowStyle}`}>
+                                            <button
+                                                className='functionButton me-2 btn text-pink border-pink'
+                                                onClick={() => handleEdit(program)}
+                                            >
+                                                <Edit03 className="d-lg-none" />
+                                                <span className="d-none d-lg-inline">Edit</span>
+                                            </button>
+                                            <button
+                                                className='functionButton btn bg-pink'
+                                                onClick={() => handleDelete(program)}
+                                            >
+                                                <Trash03 className="d-lg-none" />
+                                                <span className="d-none d-lg-inline">Delete</span>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                );
+                            })}
+                        </tbody>
+                    </table>
+                </div>
             )}
 
             {/* ADD MODAL */}

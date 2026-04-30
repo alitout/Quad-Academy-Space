@@ -49,7 +49,6 @@ ProgramSchema.pre('save', async function (next) {
         }
         this.programID = `PROG${nextID.toString().padStart(2, '0')}`;
     }
-    next();
 });
 
 const Program = mongoose.model('Program', ProgramSchema);

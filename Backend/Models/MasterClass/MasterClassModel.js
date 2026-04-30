@@ -65,7 +65,6 @@ MasterClassSchema.pre('save', async function (next) {
         }
         this.masterClassID = `MC${nextID}`;
     }
-    next();
 })
 
 const MasterClass = mongoose.model('MasterClass', MasterClassSchema);
