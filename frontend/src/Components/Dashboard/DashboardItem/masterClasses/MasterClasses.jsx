@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Modal, Button } from 'react-bootstrap';
 import axiosInstance from '../../../../API/axiosInstance';
+import { useAuth } from '../../../../Context/AuthContext';
 
-import { MASTERCLASS_GET_ALL, MASTERCLASS_DELETE_BY_ID } from '../../../../externalApi/ExternalUrls';
+import { MASTERCLASS_GET_ALL, MASTERCLASS_DELETE_BY_ID, ENROLLMENT_GET_USER, ENROLLMENT_UNENROLL_MASTERCLASS } from '../../../../externalApi/ExternalUrls';
 import MasterClassAdd from './MasterClassesAdd';
 import MasterClassEdit from './MasterClassesEdit';
 import MasterClassDeleteConfirm from './MasterClassesDeleteConfirm';
@@ -12,6 +13,9 @@ import Edit03 from '@untitled-ui/icons-react/build/cjs/Edit03';
 import Trash03 from '@untitled-ui/icons-react/build/cjs/Trash03';
 
 function MasterClasses() {
+    const auth = useAuth();
+    const isAdmin = auth?.user?.role === 'admin';
+
     const [masterClasses, setMasterClasses] = useState([]);
     const [loading, setLoading] = useState(true);
 
@@ -26,8 +30,17 @@ function MasterClasses() {
 
     const fetchMasterClasses = async () => {
         try {
-            const res = await axios.get(MASTERCLASS_GET_ALL);
-            const sorted = res.data.sort((a, b) => a.masterClassID - b.masterClassID);
+            let data;
+            if (isAdmin) {
+                // Admins see all master classes
+                const res = await axios.get(MASTERCLASS_GET_ALL);
+                data = res.data;
+            } else {
+                // Non-admins see only enrolled master classes
+                const res = await axiosInstance.get(ENROLLMENT_GET_USER);
+                data = res.data.masterClasses;
+            }
+            const sorted = data.sort((a, b) => a.masterClassID - b.masterClassID);
             setMasterClasses(sorted);
         } catch (err) {
             console.error(err);
@@ -66,15 +79,28 @@ function MasterClasses() {
         setShowDeleteModal(false);
     };
 
+    const unenrollFromMasterClass = async (masterClassID) => {
+        try {
+            await axiosInstance.post(ENROLLMENT_UNENROLL_MASTERCLASS, { masterClassID });
+            alert("Unenrolled successfully");
+            fetchMasterClasses();
+        } catch (err) {
+            console.error("Unenrollment error:", err);
+            alert(err.response?.data?.msg || "Unenrollment failed. Please try again.");
+        }
+    };
+
     return (
         <div>
             <h2>Master Classes</h2>
-            <button
-                className='functionButton btn bg-pink mb-3'
-                onClick={handleAdd}
-            >
-                Add New Master Class
-            </button>
+            {isAdmin && (
+                <button
+                    className='functionButton btn bg-pink mb-3'
+                    onClick={handleAdd}
+                >
+                    Add New Master Class
+                </button>
+            )}
 
             {loading ? (
                 <div>Loading...</div>
@@ -85,7 +111,10 @@ function MasterClasses() {
                             <tr>
                                 <th className='bg-cyan-blue text-white border p-2'>ID</th>
                                 <th className='bg-cyan-blue text-white border p-2'>Title</th>
-                                <th className='bg-cyan-blue text-white border p-2'>Actions</th>
+                                <th className='bg-cyan-blue text-white border p-2'>Brief</th>
+                                <th className='bg-cyan-blue text-white border p-2'>Enrollment</th>
+                                {isAdmin &&
+                                    <th className='bg-cyan-blue text-white border p-2'>Actions</th>}
                             </tr>
                         </thead>
                         <tbody>
@@ -98,22 +127,40 @@ function MasterClasses() {
                                     <tr key={masterClass.masterClassID}>
                                         <td className={`border p-2 ${rowStyle}`}>{masterClass.masterClassID}</td>
                                         <td className={`border p-2 ${rowStyle}`}>{masterClass.title}</td>
-                                        <td className={`border p-2 ${rowStyle}`}>
-                                            <button
-                                                className='functionButton me-2 btn text-pink border-pink'
-                                                onClick={() => handleEdit(masterClass)}
-                                            >
-                                                <Edit03 className="d-lg-none" />
-                                                <span className="d-none d-lg-inline">Edit</span>
-                                            </button>
-                                            <button
-                                                className='functionButton btn bg-pink'
-                                                onClick={() => handleDelete(masterClass)}
-                                            >
-                                                <Trash03 className="d-lg-none" />
-                                                <span className="d-none d-lg-inline">Delete</span>
-                                            </button>
-                                        </td>
+                                        <td className={`border p-2 ${rowStyle}`}>{masterClass.brief}</td>
+                                        {isAdmin ? (
+                                            <td className={`border p-2 ${rowStyle}`}>
+                                                {masterClass.enrolledUsers.length} enrolled
+                                            </td>
+                                        ) : (
+                                            <td className={`border p-2 ${rowStyle}`}>
+                                                <button
+                                                    className='functionButton me-2 btn text-pink border-pink'
+                                                    onClick={() => unenrollFromMasterClass(masterClass.masterClassID)}
+                                                >
+                                                    <Edit03 className="d-lg-none" />
+                                                    <span className="d-none d-lg-inline">Unenroll</span>
+                                                </button>
+                                            </td>
+                                        )}
+                                        {isAdmin && (
+                                            <td className={`border p-2 ${rowStyle}`}>
+                                                <button
+                                                    className='functionButton me-2 btn text-pink border-pink'
+                                                    onClick={() => handleEdit(masterClass)}
+                                                >
+                                                    <Edit03 className="d-lg-none" />
+                                                    <span className="d-none d-lg-inline">Edit</span>
+                                                </button>
+                                                <button
+                                                    className='functionButton btn bg-pink'
+                                                    onClick={() => handleDelete(masterClass)}
+                                                >
+                                                    <Trash03 className="d-lg-none" />
+                                                    <span className="d-none d-lg-inline">Delete</span>
+                                                </button>
+                                            </td>
+                                        )}
                                     </tr>
                                 );
                             })}

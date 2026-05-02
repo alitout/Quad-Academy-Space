@@ -50,6 +50,10 @@ const MasterClassSchema = new mongoose.Schema({
         type: Boolean,
         required: true,
         default: true
+    },
+    enrolledUsers: {
+        type: [String],
+        default: []
     }
 })
 

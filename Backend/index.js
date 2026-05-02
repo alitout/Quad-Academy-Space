@@ -7,6 +7,7 @@ import authRoutes from './Routes/authRoutes.js';
 import userRouter from './Routes/User/userRoutes.js'; // import the userRoutes file
 import programsRouter from './Routes/Program/programsRoutes.js'; // import the programsRoutes file
 import masterClassRouter from './Routes/MasterClass/MasterClassRoutes.js'; // import the masterClassRoutes file
+import enrollmentRouter from './Routes/Enrollment/enrollmentRoutes.js'; // import the enrollmentRoutes file
 
 dotenv.config();
 
@@ -41,6 +42,9 @@ app.use('/api/programs', programsRouter); // use the programsRoutes file
 
 // MasterClass Routes
 app.use('/api/masterclasses', masterClassRouter); // use the masterClassRoutes file
+
+// Enrollment Routes
+app.use('/api/enrollments', enrollmentRouter); // use the enrollmentRoutes file
 
 const PORT = process.env.PORT;
 app.listen(PORT, "0.0.0.0", () => {

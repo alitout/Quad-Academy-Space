@@ -75,3 +75,22 @@ export const MASTERCLASS_GET_ALL = `${BASE_URL}/masterclasses/getAll`;
 
 // Get MasterClass by ID
 export const MASTERCLASS_GET_BY_ID = (masterClassID) => `${BASE_URL}/masterclasses/getByID/${masterClassID}`;
+
+
+// Enrollment API Endpoints
+// Enroll in Program
+export const ENROLLMENT_ENROLL_PROGRAM = `${BASE_URL}/enrollments/program/enroll`;
+
+// Unenroll from Program
+export const ENROLLMENT_UNENROLL_PROGRAM = `${BASE_URL}/enrollments/program/unenroll`;
+
+// Enroll in MasterClass
+export const ENROLLMENT_ENROLL_MASTERCLASS = `${BASE_URL}/enrollments/masterclass/enroll`;
+
+// Unenroll from MasterClass
+export const ENROLLMENT_UNENROLL_MASTERCLASS = `${BASE_URL}/enrollments/masterclass/unenroll`;
+
+// Get User Enrollments
+export const ENROLLMENT_GET_USER = `${BASE_URL}/enrollments/user`;
+
+// Check Enrollment Status

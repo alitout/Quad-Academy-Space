@@ -40,7 +40,7 @@ axiosInstance.interceptors.response.use(
                 console.error("Refresh token invalid or expired — logging out");
                 localStorage.removeItem("bearerToken");
                 localStorage.removeItem("refreshToken");
-                window.location.href = "/sign-in";
+                // window.location.href = "/sign-in";
             }
         }
 

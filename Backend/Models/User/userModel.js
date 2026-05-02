@@ -32,6 +32,14 @@ const UserSchema = new mongoose.Schema({
         type: String,
         enum: ['user', 'admin'],
         default: 'user'
+    },
+    enrolledPrograms: {
+        type: [String],
+        default: []
+    },
+    enrolledMasterClasses: {
+        type: [String],
+        default: []
     }
 });
 

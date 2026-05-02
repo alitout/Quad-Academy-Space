@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import axiosInstance from "../../API/axiosInstance";
 import { Carousel, Card, Button, Modal, Image } from "react-bootstrap";
 
-import { MASTERCLASS_GET_ALL } from "../../externalApi/ExternalUrls";
+import { MASTERCLASS_GET_ALL, ENROLLMENT_ENROLL_MASTERCLASS, ENROLLMENT_UNENROLL_MASTERCLASS } from "../../externalApi/ExternalUrls";
 
 import contentCamp from "../../data/images/master-classes/content-camp.jpg";
 import publicSpeaking from "../../data/images/master-classes/public-speaking.jpg";
@@ -16,11 +17,12 @@ const ImageMap = {
     "ai-in-content-creation": AIinContentCreation,
 };
 
-const MasterClasses = ({ userRole }) => {
+const MasterClasses = ({ userRole, enrolledClasses = [], setEnrolledClasses }) => {
     const [masterclasses, setMasterclasses] = useState([]);
     const [showModal, setShowModal] = useState(false);
     const [selectedClass, setSelectedClass] = useState(null);
     const [currentIndex, setCurrentIndex] = useState(0);
+    const [loading, setLoading] = useState({});
 
     const roleFromStorage = (() => {
         try {
@@ -43,11 +45,15 @@ const MasterClasses = ({ userRole }) => {
     };
 
     useEffect(() => {
-        axios.get(MASTERCLASS_GET_ALL)
-            .then(res => {
+        const fetchData = async () => {
+            try {
+                const res = await axios.get(MASTERCLASS_GET_ALL);
                 setMasterclasses(res.data);
-            })
-            .catch(err => console.error(err));
+            } catch (err) {
+                console.error(err);
+            }
+        };
+        fetchData();
     }, []);
 
     const handleShowModal = (masterclass) => {
@@ -64,14 +70,31 @@ const MasterClasses = ({ userRole }) => {
         setCurrentIndex(selectedIndex);
     };
 
-    const handleEnroll = (masterclass) => {
-        // Placeholder enroll handler. Replace with actual API call or navigation.
-        console.log("Enroll clicked for", masterclass);
-        // Example:
-        // axios.post('/api/enroll', { masterclassId: masterclass.id })
-        //   .then(() => { /* success */ })
-        //   .catch(err => console.error(err));
-        alert(`Enrollment requested for "${masterclass.title}". Replace handleEnroll with real API call.`);
+    const handleEnroll = async (masterclass) => {
+        if (!masterclass?.masterClassID) {
+            alert("Master class data not found. Please try again.");
+            return;
+        }
+
+        setLoading(prev => ({ ...prev, [masterclass.masterClassID]: true }));
+
+        try {
+            const isEnrolled = enrolledClasses.includes(masterclass.masterClassID);
+            if (isEnrolled) {
+                await axiosInstance.post(ENROLLMENT_UNENROLL_MASTERCLASS, { masterClassID: masterclass.masterClassID });
+                setEnrolledClasses(prev => prev.filter(id => id !== masterclass.masterClassID));
+                alert("Unenrolled successfully");
+            } else {
+                await axiosInstance.post(ENROLLMENT_ENROLL_MASTERCLASS, { masterClassID: masterclass.masterClassID });
+                setEnrolledClasses(prev => [...prev, masterclass.masterClassID]);
+                alert("Enrolled successfully");
+            }
+        } catch (err) {
+            console.error("Enrollment error:", err);
+            alert(err.response?.data?.msg || "Enrollment failed. Please try again.");
+        }
+
+        setLoading(prev => ({ ...prev, [masterclass.masterClassID]: false }));
     };
 
     return (
@@ -110,8 +133,12 @@ const MasterClasses = ({ userRole }) => {
                                                 </div>
                                                 <div className="d-flex flex-row justify-content-between align-items-center gap-2">
                                                     {role === "user" && (
-                                                        <Button className="btn bg-pink border-0 pt-1 flex-grow-1" onClick={() => handleEnroll(masterclass)}>
-                                                            Enroll
+                                                        <Button
+                                                            className={enrolledClasses.includes(masterclass.masterClassID) ? "functionButton bg-white btn text-pink border-pink flex-grow-1" : "btn bg-pink border-0 pt-1 flex-grow-1"}
+                                                            onClick={() => handleEnroll(masterclass)}
+                                                            disabled={loading[masterclass.masterClassID]}
+                                                        >
+                                                            {loading[masterclass.masterClassID] ? "Processing..." : enrolledClasses.includes(masterclass.masterClassID) ? "Unenroll" : "Enroll"}
                                                         </Button>
                                                     )}
                                                     <Button className="btn bg-pink border-0 pt-1 flex-grow-1" onClick={() => handleShowModal(masterclass)}>
@@ -160,8 +187,12 @@ const MasterClasses = ({ userRole }) => {
                             </Modal.Body>
                             <Modal.Footer className="d-flex flex-row justify-content-end">
                                 {role === "user" && (
-                                    <Button className="btn bg-pink border-0 pt-1" onClick={() => handleEnroll(selectedClass)}>
-                                        Enroll
+                                    <Button
+                                        className={enrolledClasses.includes(selectedClass.masterClassID) ? "functionButton bg-white text-pink border-pink" : "btn bg-pink border-0 pt-1"}
+                                        onClick={() => handleEnroll(selectedClass)}
+                                        disabled={loading[selectedClass.masterClassID]}
+                                    >
+                                        {loading[selectedClass.masterClassID] ? "Processing..." : enrolledClasses.includes(selectedClass.masterClassID) ? "Unenroll" : "Enroll"}
                                     </Button>
                                 )}
 
