@@ -124,9 +124,9 @@ const MasterClasses = ({ userRole, enrolledClasses = [], setEnrolledClasses }) =
                             <Carousel.Item key={idx}>
                                 <div style={{ display: "flex", justifyContent: "center" }}>
                                     <div>
-                                        <Card key={masterclass.id} style={{ width: "36rem", height: "23rem" }}>
+                                        <Card key={masterclass.id} style={{ maxWidth: "36rem", height: "23rem" }}>
                                             <Card.Img variant="top" src={ImageMap[masterclass.image]} alt={masterclass.image} />
-                                            <Card.Body className="d-flex flex-column justify-content-between">
+                                            <Card.Body className="d-flex flex-column justify-content-between gap-3">
                                                 <div>
                                                     <Card.Title>{masterclass.title}</Card.Title>
                                                     <Card.Text>{masterclass.brief}</Card.Text>
