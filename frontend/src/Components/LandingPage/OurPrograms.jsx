@@ -18,6 +18,12 @@ const ImageMap = {
     "web-developement": webDevelopment,
 }
 
+const resolveImageSrc = (image) => {
+    if (!image) return ""
+    const isRemote = /^https?:\/\//i.test(image)
+    return isRemote ? image : ImageMap[image] || image
+}
+
 const ProgramCard = ({ programID, title, brief, full_description, image, date, cost, userRole, enrolledPrograms = [], updateEnrolledPrograms }) => {
     const [showModal, setShowModal] = useState(false)
     const [loading, setLoading] = useState(false)
@@ -83,7 +89,7 @@ const ProgramCard = ({ programID, title, brief, full_description, image, date, c
                 className="mb-4 program-card"
                 style={{ width: "21rem", position: "relative" }}
             >
-                <Card.Img variant="top" src={ImageMap[image]} alt={image} />
+                <Card.Img variant="top" src={resolveImageSrc(image)} alt={image} />
                 <Card.Body>
                     <Card.Title>{title}</Card.Title>
                     <Card.Text className="text-muted">{brief}</Card.Text>
@@ -148,7 +154,7 @@ const ProgramCard = ({ programID, title, brief, full_description, image, date, c
                 </Modal.Header>
                 <Modal.Body>
                     <Image
-                        src={ImageMap[image]}
+                        src={resolveImageSrc(image)}
                         alt={image}
                         className="mb-3"
                         style={{ width: "100%", borderRadius: "8px" }}

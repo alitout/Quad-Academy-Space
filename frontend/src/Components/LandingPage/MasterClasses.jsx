@@ -17,6 +17,12 @@ const ImageMap = {
     "ai-in-content-creation": AIinContentCreation,
 };
 
+const resolveImageSrc = (image) => {
+    if (!image) return ""
+    const isRemote = /^https?:\/\//i.test(image)
+    return isRemote ? image : ImageMap[image] || image
+}
+
 const MasterClasses = ({ userRole, enrolledClasses = [], setEnrolledClasses }) => {
     const [masterclasses, setMasterclasses] = useState([]);
     const [showModal, setShowModal] = useState(false);
@@ -125,7 +131,7 @@ const MasterClasses = ({ userRole, enrolledClasses = [], setEnrolledClasses }) =
                                 <div style={{ display: "flex", justifyContent: "center" }}>
                                     <div>
                                         <Card key={masterclass.id} style={{ maxWidth: "36rem", height: "23rem" }}>
-                                            <Card.Img variant="top" src={ImageMap[masterclass.image]} alt={masterclass.image} />
+                                            <Card.Img variant="top" src={resolveImageSrc(masterclass.image)} alt={masterclass.title || masterclass.image} />
                                             <Card.Body className="d-flex flex-column justify-content-between gap-3">
                                                 <div>
                                                     <Card.Title>{masterclass.title}</Card.Title>
@@ -162,7 +168,7 @@ const MasterClasses = ({ userRole, enrolledClasses = [], setEnrolledClasses }) =
                             </Modal.Header>
                             <Modal.Body>
                                 <Image
-                                    src={ImageMap[selectedClass.image]}
+                                    src={resolveImageSrc(selectedClass.image)}
                                     alt={selectedClass.title}
                                     style={{ width: "100%", marginBottom: "1rem" }}
                                 />
