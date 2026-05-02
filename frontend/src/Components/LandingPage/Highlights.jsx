@@ -15,21 +15,21 @@ function Highlights() {
                         <img src={IconLearn} alt="Learn Icon" className="icon iconLearn" />
                         <div className="txt text-md-white d-flex flex-column">
                             <h5>Learn The Latest Skills</h5>
-                            <div className="subText fw-400">Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a BC, making it over 2000 years old.</div>
+                            <div className="subText fw-400">Master cutting-edge skills with accredited and tailored programs, designed to keep you ahead in a fast-changing world.</div>
                         </div>
                     </div>
                     <div className="highlight career d-flex flex-column flex-md-row col-12 col-lg-4 gap-3 flex-grow-1">
                         <img src={IconCareer} alt="Career Icon" className="icon iconCareer" />
                         <div className="txt text-md-white d-flex flex-column">
                             <h5>Get Ready For a Career</h5>
-                            <div className="subText fw-400">Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a BC, making it over 2000 years old.</div>
+                            <div className="subText fw-400">Build the professional career through practical training, expert mentored guidance, and recognized pathways that make you competitive in the job market.</div>
                         </div>
                     </div>
                     <div className="highlight earnCertificate d-flex flex-column flex-md-row col-12 col-lg-4 gap-3 flex-grow-1">
                         <img src={IconCertificate} alt="Certificate Icon" className="icon iconCertificate" />
                         <div className="txt text-md-white d-flex flex-column">
                             <h5>Earn a Certificate</h5>
-                            <div className="subText fw-400">Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a BC, making it over 2000 years old.</div>
+                            <div className="subText fw-400">Gain respected certifications that validate your expertise and open doors to a new professional success and remarkable achievements.</div>
                         </div>
                     </div>
                 </div>

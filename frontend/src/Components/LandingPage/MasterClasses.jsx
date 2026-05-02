@@ -107,7 +107,7 @@ const MasterClasses = ({ userRole, enrolledClasses = [], setEnrolledClasses }) =
                         Master Classes
                     </h2>
                     <p className="subTitle">
-                        Lorem Ipsum is simply dummy text of the printing.
+                        Deliver deep insights, hands-on learning, and future-focused knowledge to accelerate your growth.
                     </p>
                 </div>
                 <Carousel

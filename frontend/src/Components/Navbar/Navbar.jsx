@@ -108,16 +108,6 @@ const ResponsiveNavbar = () => {
                                 >
                                     Master Classes
                                 </Nav.Link>
-                                <Nav.Link
-                                    active={false}
-                                    href="#community"
-                                    onClick={() => {
-                                        document.getElementById('community');
-                                        handleClose();
-                                    }}
-                                >
-                                    Community
-                                </Nav.Link>
                                 {!loading ? (
                                     isSignedIn ? (
                                         <Nav.Link

@@ -19,7 +19,6 @@ const Routes = () => {
         { path: '/', element: <LandingPage /> },
         { path: '/programs', element: <LandingPage /> },
         { path: '/masterclasses', element: <LandingPage /> },
-        { path: '/community', element: <LandingPage /> },
         { path: '/academycoffeespace', element: <LandingPage /> },
         { path: '/sign-up', element: <SignUpPage /> },
         { path: '/sign-in', element: <SignInPage /> },

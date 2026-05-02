@@ -199,7 +199,7 @@ function OurPrograms({ enrolledPrograms = [], setEnrolledPrograms }) {
                 <div className="d-flex flex-column align-items-center">
                     <h2 className="title">Our Programs</h2>
                     <p className="subTitle">
-                        Lorem ipsum dolor sit, amet consectetur adipisicing.
+                        Designed to build practical skills, unlock creativity, and prepare learners for success.
                     </p>
                 </div>
 

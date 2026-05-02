@@ -17,7 +17,9 @@ function HeroSection() {
                             Choice For <span className='text-cyan-blue'>Future</span>
                         </div>
                         <div className="text-gray-500 fs-1_25">
-                            Elearn is a global training provider based across the UK that specialises in accredited and bespoke training courses. We crush the...
+                            Future-focused learning hub, empowering innovators and leaders.
+                            <br />
+                            Unlock potential, fuel creativity, and prepare learners to thrive in tomorrow's world...
                         </div>
                     </div>
                 </div>
